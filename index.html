@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -237,10 +236,20 @@
                     showAlert('Tareas completadas eliminadas de la app.', 'success');
                 }
 
+            // *** CÓDIGO ACTUALIZADO PARA DEPURACIÓN ***
             } catch (err) {
-                console.error("Error al sincronizar con Google Sheets:", err);
-                const errorMsg = err.result?.error?.message || 'Ha ocurrido un error desconocido.';
-                showAlert(`Error al sincronizar: ${errorMsg}`, 'danger');
+                // Mostramos el objeto de error COMPLETO en la consola. ¡Esto es clave!
+                console.error("DETALLES COMPLETOS DEL ERROR DE GOOGLE SHEETS:", err); 
+
+                // Intentamos obtener un mensaje más específico para el usuario
+                let specificError = 'Ha ocurrido un error desconocido.';
+                if (err.result && err.result.error) {
+                    specificError = `${err.result.error.message} (Código: ${err.result.error.code})`;
+                } else if (err.message) {
+                    specificError = err.message;
+                }
+                
+                showAlert(`Error al sincronizar: ${specificError}`, 'danger');
             } finally {
                 syncBtn.disabled = false;
                 syncBtn.innerHTML = originalBtnHTML;
