@@ -157,11 +157,8 @@
                                 <div class="stats-actions">
                                     <button id="downloadCompletedBtn" class="btn btn-sm btn-outline-success" data-bs-toggle="tooltip" title="Descargar en Excel"><i class="bi bi-file-earmark-arrow-down-fill"></i></button>
                                     
-                                    <!-- SOLUCIÓN HTML: Botón de carga y botón real separados -->
-                                    <button id="syncGoogleSheetsBtnLoading" class="btn btn-sm btn-outline-secondary" disabled>
-                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                    </button>
-                                    <button id="syncGoogleSheetsBtn" class="btn btn-sm btn-outline-info" style="display: none;">
+                                    <!-- SOLUCIÓN HTML: Se implementa el botón único, deshabilitado por defecto. -->
+                                    <button id="syncGoogleSheetsBtn" class="btn btn-sm btn-outline-info" data-bs-toggle="tooltip" title="Cargando API de Google..." disabled>
                                         <i class="bi bi-google"></i>
                                     </button>
                                 </div>
@@ -202,22 +199,23 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
     <script>
-        // --- SOLUCIÓN: Sistema de triple verificación para la API de Google ---
+        // --- SOLUCIÓN JS: Sistema de flags simple, inspirado en el ejemplo funcional ---
         let gapiInited = false;
         let gisInited = false;
-        let domContentLoaded = false; 
 
         function checkAndEnableGoogleApiFeatures() {
-            if (gapiInited && gisInited && domContentLoaded) {
-                const loadingBtn = document.getElementById('syncGoogleSheetsBtnLoading');
-                const realBtn = document.getElementById('syncGoogleSheetsBtn');
-                
-                if (loadingBtn && realBtn) {
-                    loadingBtn.style.display = 'none';
-                    realBtn.style.display = 'inline-block';
-                    realBtn.setAttribute('data-bs-toggle', 'tooltip');
-                    realBtn.setAttribute('title', 'Sincronizar con Google Sheets');
-                    new bootstrap.Tooltip(realBtn);
+            // Solo actuar si AMBAS APIs de Google están listas.
+            if (gapiInited && gisInited) {
+                const syncBtn = document.getElementById('syncGoogleSheetsBtn');
+                if (syncBtn) {
+                    syncBtn.disabled = false;
+                    // Actualizar el tooltip de Bootstrap de forma segura.
+                    const tooltip = bootstrap.Tooltip.getInstance(syncBtn);
+                    if (tooltip) {
+                        tooltip.setContent({ '.tooltip-inner': 'Sincronizar con Google Sheets' });
+                    } else { // Como fallback si el tooltip no se inicializó
+                        syncBtn.title = 'Sincronizar con Google Sheets';
+                    }
                 }
             }
         }
@@ -242,9 +240,6 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            domContentLoaded = true;
-            checkAndEnableGoogleApiFeatures();
-
             class TaskManager {
                 constructor() { this.tasks = this.loadFromLocalStorage(); this.currentFilter = 'all'; this.calendar = null; }
                 generateId() { return Date.now().toString(36) + Math.random().toString(36).substring(2, 9); }
@@ -258,12 +253,9 @@
                     const inProgress = this.tasks.filter(t => t.status === 'process').length; 
                     const completed = this.tasks.filter(t => t.status === 'done').length; 
 
-                    // --- SOLUCIÓN: LÓGICA DE FECHA RESTAURADA, SIMPLE Y CORRECTA ---
-                    const todayStr = new Date().toLocaleDateString('en-CA');
-                    
-                    const todayTasks = this.tasks.filter(t => 
-                        t.date === todayStr && t.status !== 'done'
-                    ).length;
+                    // --- SOLUCIÓN: Lógica de "Para Hoy" restaurada a su estado original y correcto ---
+                    const todayStr = new Date().toISOString().split('T')[0];
+                    const todayTasks = this.tasks.filter(t => t.date === todayStr && t.status !== 'done').length; 
                     
                     document.getElementById('totalTasks').textContent = total; 
                     document.getElementById('inProgressTasks').textContent = inProgress; 
