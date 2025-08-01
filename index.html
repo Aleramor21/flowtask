@@ -169,8 +169,16 @@
                                 <div><div class="stats-value" id="completedTasks">0</div><div class="stats-label">Completadas</div></div>
                                 <div class="stats-actions">
                                     <button id="downloadCompletedBtn" class="btn btn-sm btn-outline-success" data-bs-toggle="tooltip" title="Descargar en Excel"><i class="bi bi-file-earmark-arrow-down-fill"></i></button>
-                                    <!-- SOLUCIÓN HTML: Eliminamos data-bs-toggle del botón de Google para evitar inicialización prematura -->
-                                    <button id="syncGoogleSheetsBtn" class="btn btn-sm btn-outline-info" title="Cargando API de Google..." disabled><i class="bi bi-google"></i></button>
+                                    
+                                    <!-- SOLUCIÓN HTML: DOS BOTONES PARA GOOGLE SHEETS -->
+                                    <!-- 1. Botón de Carga (visible al inicio) -->
+                                    <button id="syncGoogleSheetsBtnLoading" class="btn btn-sm btn-outline-secondary" disabled>
+                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                    </button>
+                                    <!-- 2. Botón Real (oculto al inicio) -->
+                                    <button id="syncGoogleSheetsBtn" class="btn btn-sm btn-outline-info" data-bs-toggle="tooltip" title="Sincronizar con Google Sheets" style="display: none;">
+                                        <i class="bi bi-google"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -227,18 +235,13 @@
          */
         function checkAndEnableGoogleApiFeatures() {
             if (gapiInited && gisInited) {
-                const syncBtn = document.getElementById('syncGoogleSheetsBtn');
-                if (syncBtn) {
-                    // --- SOLUCIÓN JS: Estrategia robusta para activar el botón y su tooltip ---
-                    // 1. Habilitar el botón.
-                    syncBtn.disabled = false;
-                    // 2. Establecer el título correcto.
-                    syncBtn.setAttribute('title', 'Sincronizar con Google Sheets');
-                    // 3. Añadir el atributo para que Bootstrap sepa que debe manejarlo.
-                    syncBtn.setAttribute('data-bs-toggle', 'tooltip');
-                    // 4. Crear una nueva instancia de Tooltip sobre el botón ya habilitado y configurado.
-                    new bootstrap.Tooltip(syncBtn);
-                    
+                // --- SOLUCIÓN JS: Intercambiar botones ---
+                const loadingBtn = document.getElementById('syncGoogleSheetsBtnLoading');
+                const realBtn = document.getElementById('syncGoogleSheetsBtn');
+                
+                if (loadingBtn && realBtn) {
+                    loadingBtn.style.display = 'none';
+                    realBtn.style.display = 'inline-block';
                     console.log("Google API features are now ready.");
                 }
             }
@@ -285,15 +288,19 @@
                     const inProgress = this.tasks.filter(t => t.status === 'process').length; 
                     const completed = this.tasks.filter(t => t.status === 'done').length; 
 
-                    // --- SOLUCIÓN: CORRECCIÓN DE ZONA HORARIA ---
-                    // Genera la fecha de "hoy" basándose en la zona horaria local del usuario, no en UTC.
+                    // --- SOLUCIÓN: COMPARACIÓN DE FECHAS A PRUEBA DE ZONAS HORARIAS ---
                     const today = new Date();
-                    const year = today.getFullYear();
-                    const month = String(today.getMonth() + 1).padStart(2, '0');
-                    const day = String(today.getDate()).padStart(2, '0');
-                    const todayStr = `${year}-${month}-${day}`;
+                    const todayTasks = this.tasks.filter(t => {
+                        if (!t.date || t.status === 'done') return false;
+                        // El input date da 'YYYY-MM-DD'. `new Date()` lo interpreta como UTC.
+                        // Para comparar correctamente con la fecha local, añadimos 'T00:00:00'
+                        // lo que fuerza a `new Date` a interpretarlo en la zona horaria local.
+                        const taskDate = new Date(t.date + 'T00:00:00');
+                        return taskDate.getFullYear() === today.getFullYear() &&
+                               taskDate.getMonth() === today.getMonth() &&
+                               taskDate.getDate() === today.getDate();
+                    }).length;
                     
-                    const todayTasks = this.tasks.filter(t => t.date === todayStr && t.status !== 'done').length; 
                     document.getElementById('totalTasks').textContent = total; 
                     document.getElementById('inProgressTasks').textContent = inProgress; 
                     document.getElementById('completedTasks').textContent = completed; 
@@ -397,7 +404,13 @@
                 }
             });
 
-            document.querySelectorAll('input[type="date"]').forEach(input => input.min = new Date().toISOString().split('T')[0]);
+            document.querySelectorAll('input[type="date"]').forEach(input => {
+                const today = new Date();
+                const year = today.getFullYear();
+                const month = String(today.getMonth() + 1).padStart(2, '0');
+                const day = String(today.getDate()).padStart(2, '0');
+                input.min = `${year}-${month}-${day}`;
+            });
             
             // --- Final Initialization Steps ---
             populateTagSelectors();
