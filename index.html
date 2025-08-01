@@ -157,8 +157,8 @@
                                 <div class="stats-actions">
                                     <button id="downloadCompletedBtn" class="btn btn-sm btn-outline-success" data-bs-toggle="tooltip" title="Descargar en Excel"><i class="bi bi-file-earmark-arrow-down-fill"></i></button>
                                     
-                                    <!-- SOLUCIÓN HTML: Botón único, deshabilitado por defecto. -->
-                                    <button id="syncGoogleSheetsBtn" class="btn btn-sm btn-outline-info" data-bs-toggle="tooltip" title="Cargando API de Google..." disabled>
+                                    <!-- SOLUCIÓN HTML: Botón aislado, sin data-bs-toggle para evitar conflictos -->
+                                    <button id="syncGoogleSheetsBtn" class="btn btn-sm btn-outline-info" title="Cargando API de Google..." disabled>
                                         <i class="bi bi-google"></i>
                                     </button>
                                 </div>
@@ -199,26 +199,21 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
     <script>
-        // --- SOLUCIÓN JS: Sistema simple de flags, como en el ejemplo funcional ---
+        // --- SOLUCIÓN JS: Sistema de triple verificación para la API de Google ---
         let gapiInited = false;
         let gisInited = false;
+        let domContentLoaded = false; 
 
         function checkAndEnableGoogleApiFeatures() {
-            if (gapiInited && gisInited) {
+            // Solo actuar si las TRES condiciones son verdaderas
+            if (gapiInited && gisInited && domContentLoaded) {
                 const syncBtn = document.getElementById('syncGoogleSheetsBtn');
                 if (syncBtn) {
                     syncBtn.disabled = false;
-                    
-                    // Actualizar el tooltip de Bootstrap de forma segura.
-                    const existingTooltip = bootstrap.Tooltip.getInstance(syncBtn);
-                    if (existingTooltip) {
-                        // Si ya existe un tooltip, actualiza su contenido.
-                        existingTooltip.setContent({ '.tooltip-inner': 'Sincronizar con Google Sheets' });
-                    } else {
-                        // Si no existe, simplemente actualiza el título y Bootstrap lo recogerá.
-                        syncBtn.setAttribute('title', 'Sincronizar con Google Sheets');
-                        new bootstrap.Tooltip(syncBtn); // Es seguro crear uno nuevo ahora.
-                    }
+                    // Ahora que es seguro, le asignamos los atributos y creamos el tooltip
+                    syncBtn.setAttribute('data-bs-toggle', 'tooltip');
+                    syncBtn.setAttribute('title', 'Sincronizar con Google Sheets');
+                    new bootstrap.Tooltip(syncBtn);
                 }
             }
         }
@@ -243,6 +238,9 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
+            domContentLoaded = true;
+            checkAndEnableGoogleApiFeatures();
+
             class TaskManager {
                 constructor() { this.tasks = this.loadFromLocalStorage(); this.currentFilter = 'all'; this.calendar = null; }
                 generateId() { return Date.now().toString(36) + Math.random().toString(36).substring(2, 9); }
