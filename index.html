@@ -31,7 +31,6 @@
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--light-color); color: var(--dark-color); }
         .navbar { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); box-shadow: 0 4px 20px rgba(99, 102, 241, 0.2); position: sticky; top: 0; z-index: 1020; }
         
-        /* Estilos para la barra lateral de ESCRITORIO */
         .sidebar { background-color: white; border-right: 1px solid #e5e7eb; height: calc(100vh - 56px); position: sticky; top: 56px; overflow-y: auto; z-index: 1000; }
         
         .main-content { padding: 2rem 1rem; }
@@ -41,14 +40,12 @@
         .task-item { padding: 1rem; border-bottom: 1px solid #f3f4f6; transition: var(--transition); }
         .task-item:hover { background-color: #f9fafb; transform: translateX(5px); }
         
-        /* Stats card improvements */
         .stats-card { background: white; border: 1px solid #e5e7eb; border-radius: var(--border-radius); padding: 20px; text-align: center; height: 100%; transition: var(--transition); display: flex; flex-direction: column; justify-content: space-between; }
         .stats-card:hover { transform: translateY(-3px); box-shadow: var(--box-shadow); }
         .stats-value { font-size: 2.5rem; font-weight: 700; margin-bottom: 5px; color: var(--primary-color); }
         .stats-label { color: var(--gray-color); font-size: 1rem; }
         .stats-actions { margin-top: 15px; }
 
-        /* Calendar improvements */
         .calendar-container { position: relative; height: 65vh; }
         .fc .fc-button-primary { background-color: var(--primary-color) !important; border-color: var(--primary-color) !important; }
         .fc .fc-toolbar-title { font-size: 1.25em; }
@@ -56,43 +53,34 @@
         .fc-daygrid-day.day-with-task .fc-daygrid-day-number { font-weight: 700; text-decoration: underline; color: var(--primary-dark); }
         .fc-daygrid-day:hover { background-color: #e0e7ff !important; }
 
-        /* Custom Tag Styles */
         .task-tags-container .tag, #detailTaskTags .tag { padding: 0.2em 0.6em; font-size: 0.75rem; font-weight: 600; border-radius: 20px; color: white; margin-right: 5px; margin-bottom: 5px; display: inline-block; }
         .tag-work { background-color: #3b82f6; } .tag-personal { background-color: #ec4899; } .tag-urgent { background-color: #ef4444; } .tag-important { background-color: #f97316; } .tag-reunion { background-color: #8b5cf6; } .tag-proyecto { background-color: #14b8a6; } .tag-estudio { background-color: #f59e0b; } .tag-social { background-color: #0ea5e9; } .tag-salud { background-color: #22c55e; } .tag-familiares { background-color: #6366f1; }
-        .tag-cumpleanos { background-color: #facc15; color: #422006;} /* New Tag: Gold */
+        .tag-cumpleanos { background-color: #facc15; color: #422006;}
         
-        /* Tag Pill Selector for Modals */
         .tag-selector-container { display: flex; flex-wrap: wrap; gap: 8px; }
         .tag-selector-pill { cursor: pointer; padding: 5px 12px; border: 1px solid #dee2e6; border-radius: 20px; font-size: 0.9rem; transition: all 0.2s ease; background-color: #f8f9fa; }
         .tag-selector-pill.active { background-color: var(--primary-color); color: white; border-color: var(--primary-color); }
         
-        /* Pulse animation for 'Today's tasks' card */
         @keyframes pulse-glow {
             0%, 100% { box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08), 0 0 0 0 rgba(99, 102, 241, 0.4); }
             50% { box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08), 0 0 20px 5px rgba(99, 102, 241, 0.1); }
         }
         .stats-card.has-today-tasks { animation: pulse-glow 2.5s infinite ease-in-out; }
 
-        /* Tag Filter Dropdown Style */
         .card-header .form-select {
             background-color: rgba(255, 255, 255, 0.2);
             color: white;
             border-color: rgba(255, 255, 255, 0.5);
             background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
         }
-        .card-header .form-select option {
-            color: var(--dark-color);
-        }
-        .card-header .form-select:focus {
-            box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
-        }
+        .card-header .form-select option { color: var(--dark-color); }
+        .card-header .form-select:focus { box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25); }
     </style>
 </head>
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
-            <!-- BOTÓN HAMBURGUESA (visible solo en móvil) -->
             <button class="btn btn-dark d-lg-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas" aria-controls="sidebarOffcanvas">
                 <i class="bi bi-list"></i>
             </button>
@@ -100,14 +88,13 @@
         </div>
     </nav>
 
-    <!-- MENÚ LATERAL DESLIZABLE PARA MÓVIL (Offcanvas) -->
+    <!-- Offcanvas Menu -->
     <div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="sidebarOffcanvas" aria-labelledby="sidebarOffcanvasLabel">
         <div class="offcanvas-header border-bottom">
             <h5 class="offcanvas-title" id="sidebarOffcanvasLabel"><i class="bi bi-funnel-fill me-2"></i>Filtros y Opciones</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
-            <!-- Contenido del sidebar copiado aquí para el offcanvas -->
             <div class="p-0">
                 <button class="btn btn-primary w-100 mb-4" data-bs-toggle="modal" data-bs-target="#addTaskModal"><i class="bi bi-plus-circle-fill me-2"></i> Nueva Tarea</button>
                 <h5 class="mb-3 text-muted small text-uppercase">Filtros</h5>
@@ -133,7 +120,7 @@
 
     <div class="container-fluid">
         <div class="row">
-            <!-- BARRA LATERAL PARA ESCRITORIO (oculta en móvil) -->
+            <!-- Desktop Sidebar -->
             <aside class="col-lg-3 col-xl-2 sidebar px-0 d-none d-lg-block">
                 <div class="p-4">
                     <button class="btn btn-primary w-100 mb-4" data-bs-toggle="modal" data-bs-target="#addTaskModal"><i class="bi bi-plus-circle-fill me-2"></i> Nueva Tarea</button>
@@ -170,13 +157,11 @@
                                 <div class="stats-actions">
                                     <button id="downloadCompletedBtn" class="btn btn-sm btn-outline-success" data-bs-toggle="tooltip" title="Descargar en Excel"><i class="bi bi-file-earmark-arrow-down-fill"></i></button>
                                     
-                                    <!-- SOLUCIÓN HTML: DOS BOTONES PARA GOOGLE SHEETS -->
-                                    <!-- 1. Botón de Carga (visible al inicio) -->
+                                    <!-- SOLUCIÓN HTML: Botón de carga y botón real separados -->
                                     <button id="syncGoogleSheetsBtnLoading" class="btn btn-sm btn-outline-secondary" disabled>
                                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                     </button>
-                                    <!-- 2. Botón Real (oculto al inicio) -->
-                                    <button id="syncGoogleSheetsBtn" class="btn btn-sm btn-outline-info" data-bs-toggle="tooltip" title="Sincronizar con Google Sheets" style="display: none;">
+                                    <button id="syncGoogleSheetsBtn" class="btn btn-sm btn-outline-info" style="display: none;">
                                         <i class="bi bi-google"></i>
                                     </button>
                                 </div>
@@ -196,9 +181,7 @@
                                 <span id="taskListTitle">Lista de Tareas</span>
                             </div>
                             <div class="col-md-4 col-lg-3">
-                                <select id="tagFilterDropdown" class="form-select form-select-sm" aria-label="Filtrar por etiqueta">
-                                    <!-- Options populated by JS -->
-                                </select>
+                                <select id="tagFilterDropdown" class="form-select form-select-sm" aria-label="Filtrar por etiqueta"></select>
                             </div>
                         </div>
                         <div class="card-body p-0"><div id="tasksList"></div></div>
@@ -209,12 +192,11 @@
         </div>
     </div>
 
-    <!-- Modals (Add, Edit, Detail) -->
+    <!-- Modals -->
     <div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="addTaskModalLabel"><i class="bi bi-plus-circle me-2"></i> Nueva Tarea</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body p-4"><form id="addTaskForm" novalidate><div class="row g-3"><div class="col-12"><label for="taskTitle" class="form-label">Título <span class="text-danger">*</span></label><input type="text" class="form-control" id="taskTitle" required></div><div class="col-12"><label for="taskDescription" class="form-label">Detalles</label><textarea class="form-control" id="taskDescription" rows="3"></textarea></div><div class="col-md-6"><label for="taskDate" class="form-label">Fecha</label><input type="date" class="form-control" id="taskDate"></div><div class="col-md-6"><label for="taskStatus" class="form-label">Estado</label><select class="form-select" id="taskStatus"><option value="created">Creado</option><option value="process">En Proceso</option><option value="done">Terminado</option></select></div><div class="col-md-6"><label for="taskPriority" class="form-label">Prioridad</label><select class="form-select" id="taskPriority"><option value="low">Baja</option><option value="medium" selected>Media</option><option value="high">Alta</option></select></div><div class="col-12"><label class="form-label">Etiquetas</label><div id="addTaskTagsContainer" class="tag-selector-container"></div></div></div></form></div><div class="modal-footer"><button type="button" class="btn btn-light border" data-bs-dismiss="modal">Cancelar</button><button type="button" class="btn btn-primary px-4" id="saveTaskBtn">Guardar Tarea</button></div></div></div></div>
     <div class="modal fade" id="editTaskModal" tabindex="-1" aria-labelledby="editTaskModalLabel" aria-hidden="true"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="editTaskModalLabel"><i class="bi bi-pencil-square me-2"></i> Editar Tarea</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body p-4"><form id="editTaskForm"><input type="hidden" id="editTaskId"><div class="row g-3"><div class="col-12"><label for="editTaskTitle" class="form-label">Título</label><input type="text" class="form-control" id="editTaskTitle" required></div><div class="col-12"><label for="editTaskDescription" class="form-label">Detalles</label><textarea class="form-control" id="editTaskDescription" rows="3"></textarea></div><div class="col-md-6"><label for="editTaskDate" class="form-label">Fecha</label><input type="date" class="form-control" id="editTaskDate"></div><div class="col-md-6"><label for="editTaskStatus" class="form-label">Estado</label><select class="form-select" id="editTaskStatus"><option value="created">Creado</option><option value="process">En Proceso</option><option value="done">Terminado</option></select></div><div class="col-md-6"><label for="editTaskPriority" class="form-label">Prioridad</label><select class="form-select" id="editTaskPriority"><option value="low">Baja</option><option value="medium">Media</option><option value="high">Alta</option></select></div><div class="col-12"><label class="form-label">Etiquetas</label><div id="editTaskTagsContainer" class="tag-selector-container"></div></div></div></form></div><div class="modal-footer"><button type="button" class="btn btn-light border" data-bs-dismiss="modal">Cancelar</button><button type="button" class="btn btn-primary" id="updateTaskBtn">Actualizar Tarea</button></div></div></div></div>
     <div class="modal fade" id="taskDetailModal" tabindex="-1" aria-labelledby="taskDetailModalLabel" aria-hidden="true"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="taskDetailModalLabel"><span id="detailTaskTitle"></span></h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body p-4"><div class="row g-4"><div class="col-12"><h6 class="text-muted">Detalles</h6><div id="detailTaskDescription" class="p-3 bg-light border rounded"></div></div><div class="col-md-6"><h6 class="text-muted">Fecha de vencimiento</h6><p id="detailTaskDate" class="mb-0"></p></div><div class="col-md-6"><h6 class="text-muted">Estado</h6><p id="detailTaskStatusWrapper" class="mb-0"></p></div><div class="col-md-6"><h6 class="text-muted">Prioridad</h6><p id="detailTaskPriority" class="d-flex align-items-center mb-0"></p></div><div class="col-12"><h6 class="text-muted">Etiquetas</h6><div id="detailTaskTags"></div></div></div></div><div class="modal-footer"><button type="button" class="btn btn-danger me-auto" id="deleteTaskFromDetailBtn"><i class="bi bi-trash-fill me-2"></i>Eliminar</button><button type="button" class="btn btn-light border" data-bs-dismiss="modal">Cerrar</button><button type="button" class="btn btn-warning" id="editTaskFromDetailBtn"><i class="bi bi-pencil-fill me-2"></i>Editar</button></div></div></div></div>
     
-    <!-- Alert Container -->
     <div class="position-fixed top-0 end-0 p-3" style="z-index: 1056;"><div id="alertContainer"></div></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -230,46 +212,33 @@
         let gapiInited = false;
         let gisInited = false;
 
-        /**
-         * Central function to enable Google API features once all scripts are loaded.
-         */
         function checkAndEnableGoogleApiFeatures() {
             if (gapiInited && gisInited) {
-                // --- SOLUCIÓN JS: Intercambiar botones ---
+                // --- SOLUCIÓN JS: Intercambio de botones y activación Just-in-Time ---
                 const loadingBtn = document.getElementById('syncGoogleSheetsBtnLoading');
                 const realBtn = document.getElementById('syncGoogleSheetsBtn');
                 
                 if (loadingBtn && realBtn) {
                     loadingBtn.style.display = 'none';
                     realBtn.style.display = 'inline-block';
-                    console.log("Google API features are now ready.");
+                    // Activar el tooltip solo ahora que el botón es visible y funcional.
+                    realBtn.setAttribute('data-bs-toggle', 'tooltip');
+                    realBtn.setAttribute('title', 'Sincronizar con Google Sheets');
+                    new bootstrap.Tooltip(realBtn);
                 }
             }
         }
 
-        // Callback after GAPI script is loaded
-        function gapiLoaded() {
-            gapi.load('client', initializeGapiClient);
-        }
-
-        // Callback after GAPI client is initialized
+        function gapiLoaded() { gapi.load('client', initializeGapiClient); }
         async function initializeGapiClient() {
-            await gapi.client.init({
-                discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
-            });
+            await gapi.client.init({ discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'] });
             gapiInited = true;
-            checkAndEnableGoogleApiFeatures(); // Check if we can enable features
+            checkAndEnableGoogleApiFeatures();
         }
-
-        // Callback after GIS script is loaded
         function gisLoaded() {
-            tokenClient = google.accounts.oauth2.initTokenClient({
-                client_id: CLIENT_ID,
-                scope: SCOPES,
-                callback: '', // Callback is set dynamically when the button is clicked
-            });
+            tokenClient = google.accounts.oauth2.initTokenClient({ client_id: CLIENT_ID, scope: SCOPES, callback: '' });
             gisInited = true;
-            checkAndEnableGoogleApiFeatures(); // Check if we can enable features
+            checkAndEnableGoogleApiFeatures();
         }
         // --- End Google API Integration ---
 
@@ -288,17 +257,21 @@
                     const inProgress = this.tasks.filter(t => t.status === 'process').length; 
                     const completed = this.tasks.filter(t => t.status === 'done').length; 
 
-                    // --- SOLUCIÓN: COMPARACIÓN DE FECHAS A PRUEBA DE ZONAS HORARIAS ---
+                    // --- SOLUCIÓN: LÓGICA DE COMPARACIÓN DE FECHA INFALIBLE ---
                     const today = new Date();
+                    const todayYear = today.getFullYear();
+                    const todayMonth = today.getMonth(); // 0-indexed
+                    const todayDate = today.getDate();
+
                     const todayTasks = this.tasks.filter(t => {
                         if (!t.date || t.status === 'done') return false;
-                        // El input date da 'YYYY-MM-DD'. `new Date()` lo interpreta como UTC.
-                        // Para comparar correctamente con la fecha local, añadimos 'T00:00:00'
-                        // lo que fuerza a `new Date` a interpretarlo en la zona horaria local.
-                        const taskDate = new Date(t.date + 'T00:00:00');
-                        return taskDate.getFullYear() === today.getFullYear() &&
-                               taskDate.getMonth() === today.getMonth() &&
-                               taskDate.getDate() === today.getDate();
+                        
+                        const parts = t.date.split('-'); // [YYYY, MM, DD]
+                        const taskYear = parseInt(parts[0], 10);
+                        const taskMonth = parseInt(parts[1], 10) - 1; // Convert to 0-indexed
+                        const taskDate = parseInt(parts[2], 10);
+                        
+                        return taskYear === todayYear && taskMonth === todayMonth && taskDate === todayDate;
                     }).length;
                     
                     document.getElementById('totalTasks').textContent = total; 
@@ -306,11 +279,7 @@
                     document.getElementById('completedTasks').textContent = completed; 
                     document.getElementById('todayTasks').textContent = todayTasks; 
                     const todayTasksCard = document.getElementById('todayTasks').closest('.stats-card'); 
-                    if (todayTasks > 0) { 
-                        todayTasksCard.classList.add('has-today-tasks'); 
-                    } else { 
-                        todayTasksCard.classList.remove('has-today-tasks'); 
-                    } 
+                    todayTasksCard.classList.toggle('has-today-tasks', todayTasks > 0);
                 }
                 renderTasks() { const tasksContainer = document.getElementById('tasksList'); const filteredTasks = this.getFilteredTasks(); if (filteredTasks.length === 0) { tasksContainer.innerHTML = `<div class="text-center p-4 text-muted"><i class="bi bi-clipboard-x fs-2 my-3 d-block"></i><h5>No hay tareas que mostrar</h5><p>${this.currentFilter === 'all' ? 'Comienza agregando una nueva tarea.' : 'No se encontraron tareas con este filtro.'}</p></div>`; return; } tasksContainer.innerHTML = ''; filteredTasks.forEach(task => { const dateOptions = { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'UTC' }; const taskDate = task.date ? new Date(task.date).toLocaleDateString('es-ES', dateOptions) : 'Sin fecha'; const tagsHtml = task.tags.map(tag => `<span class="tag tag-${tag.toLowerCase()}">${this.getLabel('tag', tag)}</span>`).join(''); const taskElement = document.createElement('div'); taskElement.className = 'task-item'; taskElement.dataset.id = task.id; taskElement.innerHTML = `<div class="d-flex justify-content-between align-items-center gap-3"><div class="flex-grow-1" style="cursor: pointer;" data-action="view"><div class="d-flex align-items-center mb-2"><span class="task-priority priority-${task.priority}"></span><h6 class="mb-0 me-3">${task.title}</h6><span class="badge rounded-pill" style="background-color: var(--${task.status === 'done' ? 'success' : 'primary'}-color);">${this.getLabel('status', task.status)}</span></div><div class="d-flex flex-wrap align-items-center gap-2 mb-1"><small class="text-muted"><i class="bi bi-calendar-event me-1"></i>${taskDate}</small>${tagsHtml ? '<div class="ms-2 task-tags-container">'+tagsHtml+'</div>' : ''}</div></div><div class="btn-group"><button class="btn btn-sm btn-outline-secondary edit-btn" aria-label="Editar"><i class="bi bi-pencil"></i></button></div></div>`; taskElement.querySelector('[data-action="view"]').addEventListener('click', (e) => { e.stopPropagation(); this.showTaskDetail(task.id); }); taskElement.querySelector('.edit-btn').addEventListener('click', (e) => { e.stopPropagation(); this.openEditModal(task.id); }); tasksContainer.appendChild(taskElement); }); }
                 showTaskDetail(id) { const task = this.getTaskById(id); if (!task) return; const detailModal = new bootstrap.Modal(document.getElementById('taskDetailModal')); document.getElementById('detailTaskTitle').textContent = task.title; document.getElementById('detailTaskDescription').textContent = task.description || 'Sin detalles.'; const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }; document.getElementById('detailTaskDate').textContent = task.date ? new Date(task.date).toLocaleDateString('es-ES', dateOptions) : 'Sin fecha'; document.getElementById('detailTaskStatusWrapper').innerHTML = `<span class="badge rounded-pill">${this.getLabel('status', task.status)}</span>`; document.getElementById('detailTaskPriority').innerHTML = `<span class="task-priority priority-${task.priority}"></span> ${this.getLabel('priority', task.priority)}`; document.getElementById('detailTaskTags').innerHTML = task.tags.length > 0 ? task.tags.map(tag => `<span class="tag tag-${tag.toLowerCase()}">${this.getLabel('tag', tag)}</span>`).join('') : '<span class="text-muted">Sin etiquetas</span>'; document.getElementById('deleteTaskFromDetailBtn').dataset.id = id; document.getElementById('editTaskFromDetailBtn').dataset.id = id; detailModal.show(); }
@@ -328,41 +297,15 @@
 
                     try {
                         const completed = this.tasks.filter(task => task.status === 'done');
-                        if (completed.length === 0) {
-                            showAlert('No hay tareas completadas para sincronizar.', 'info');
-                            return;
-                        }
-                        
+                        if (completed.length === 0) { showAlert('No hay tareas completadas para sincronizar.', 'info'); return; }
                         const headers = ['Titulo de la Tarea', 'Detalles (descripción)', 'Fecha de vencimiento', 'Prioridad', 'Etiquetas'];
-                        const dataForSheet = completed.map(task => ([
-                            task.title,
-                            task.description || '',
-                            task.date ? new Date(task.date).toLocaleDateString('es-ES', {timeZone: 'UTC'}) : 'N/A',
-                            this.getLabel('priority', task.priority),
-                            task.tags.map(t => this.getLabel('tag', t)).join(', ')
-                        ]));
+                        const dataForSheet = completed.map(task => ([ task.title, task.description || '', task.date ? new Date(task.date).toLocaleDateString('es-ES', {timeZone: 'UTC'}) : 'N/A', this.getLabel('priority', task.priority), task.tags.map(t => this.getLabel('tag', t)).join(', ') ]));
                         dataForSheet.unshift(headers);
-
-                        await gapi.client.sheets.spreadsheets.values.clear({
-                            spreadsheetId: SPREADSHEET_ID,
-                            range: `'${SHEET_NAME}'!A1:Z`,
-                        });
-                        
-                        await gapi.client.sheets.spreadsheets.values.update({
-                            spreadsheetId: SPREADSHEET_ID,
-                            range: `'${SHEET_NAME}'!A1`,
-                            valueInputOption: 'USER_ENTERED',
-                            resource: { values: dataForSheet }
-                        });
-
+                        await gapi.client.sheets.spreadsheets.values.clear({ spreadsheetId: SPREADSHEET_ID, range: `'${SHEET_NAME}'!A1:Z` });
+                        await gapi.client.sheets.spreadsheets.values.update({ spreadsheetId: SPREADSHEET_ID, range: `'${SHEET_NAME}'!A1`, valueInputOption: 'USER_ENTERED', resource: { values: dataForSheet } });
                         showAlert('Tareas completadas sincronizadas con Google Sheets.', 'success');
-                    } catch (err) {
-                        showAlert('Error al sincronizar con Google Sheets. Revisa la consola.', 'danger');
-                        console.error("Google Sheets API Error:", err);
-                    } finally {
-                        syncBtn.disabled = false;
-                        syncBtn.innerHTML = `<i class="bi bi-google"></i>`;
-                    }
+                    } catch (err) { showAlert('Error al sincronizar con Google Sheets. Revisa la consola.', 'danger'); console.error("Google Sheets API Error:", err); } 
+                    finally { syncBtn.disabled = false; syncBtn.innerHTML = `<i class="bi bi-google"></i>`; }
                 }
 
                 saveToLocalStorage() { try { localStorage.setItem('taskflow_pro_tasks', JSON.stringify(this.tasks)); } catch (e) { console.error("Error al guardar en localStorage:", e); showAlert('No se pudieron guardar los cambios.', 'danger'); } }
@@ -378,41 +321,18 @@
             function populateTagFilterDropdown() { const dropdown = document.getElementById('tagFilterDropdown'); if (!dropdown) return; const tagOptions = taskManager.getLabel('tag'); dropdown.innerHTML = '<option value="all">Filtrar por Etiqueta</option>'; for (const [value, label] of Object.entries(tagOptions)) { const option = document.createElement('option'); option.value = `tag-${value}`; option.textContent = label; dropdown.appendChild(option); } }
 
             const addTaskModal = new bootstrap.Modal(document.getElementById('addTaskModal'));
-            document.getElementById('toggleViewBtn').addEventListener('click', () => { const isCalendarVisible = document.getElementById('calendarViewContainer').style.display === 'block'; if (isCalendarVisible) { document.getElementById('calendarViewContainer').style.display = 'none'; document.getElementById('taskListContainer').style.display = 'block'; document.getElementById('toggleViewBtn').innerHTML = `<i class="bi bi-calendar-week me-2"></i> Ver Calendario`; } else { document.getElementById('taskListContainer').style.display = 'none'; document.getElementById('calendarViewContainer').style.display = 'block'; document.getElementById('toggleViewBtn').innerHTML = `<i class="bi bi-list-task me-2"></i> Ver Lista de Tareas`; taskManager.calendar.updateSize(); } });
-            document.getElementById('saveTaskBtn').addEventListener('click', function() { const titleInput = document.getElementById('taskTitle'); if (!titleInput.value.trim()) { showAlert('El título es obligatorio.', 'warning'); titleInput.focus(); return; } const saveBtn = this; saveBtn.disabled = true; saveBtn.innerHTML = `<span class="spinner-border spinner-border-sm"></span> Guardando...`; const selectedTags = Array.from(document.querySelectorAll('#addTaskTagsContainer .tag-selector-pill.active')).map(pill => pill.dataset.value); taskManager.addTask({ title: titleInput.value.trim(), description: document.getElementById('taskDescription').value.trim(), date: document.getElementById('taskDate').value, status: document.getElementById('taskStatus').value, priority: document.getElementById('taskPriority').value, tags: selectedTags }); document.getElementById('addTaskForm').reset(); document.querySelectorAll('#addTaskTagsContainer .tag-selector-pill.active').forEach(p => p.classList.remove('active')); addTaskModal.hide(); showAlert('Tarea agregada.', 'success'); saveBtn.disabled = false; saveBtn.innerHTML = 'Guardar Tarea'; });
+            document.getElementById('toggleViewBtn').addEventListener('click', () => { const isCalendarVisible = document.getElementById('calendarViewContainer').style.display === 'block'; document.getElementById('taskListContainer').style.display = isCalendarVisible ? 'block' : 'none'; document.getElementById('calendarViewContainer').style.display = isCalendarVisible ? 'none' : 'block'; document.getElementById('toggleViewBtn').innerHTML = isCalendarVisible ? `<i class="bi bi-calendar-week me-2"></i> Ver Calendario` : `<i class="bi bi-list-task me-2"></i> Ver Lista de Tareas`; if (!isCalendarVisible) taskManager.calendar.updateSize(); });
+            document.getElementById('saveTaskBtn').addEventListener('click', function() { const titleInput = document.getElementById('taskTitle'); if (!titleInput.value.trim()) { showAlert('El título es obligatorio.', 'warning'); titleInput.focus(); return; } this.disabled = true; this.innerHTML = `<span class="spinner-border spinner-border-sm"></span> Guardando...`; const selectedTags = Array.from(document.querySelectorAll('#addTaskTagsContainer .tag-selector-pill.active')).map(pill => pill.dataset.value); taskManager.addTask({ title: titleInput.value.trim(), description: document.getElementById('taskDescription').value.trim(), date: document.getElementById('taskDate').value, status: document.getElementById('taskStatus').value, priority: document.getElementById('taskPriority').value, tags: selectedTags }); document.getElementById('addTaskForm').reset(); document.querySelectorAll('#addTaskTagsContainer .tag-selector-pill.active').forEach(p => p.classList.remove('active')); addTaskModal.hide(); showAlert('Tarea agregada.', 'success'); this.disabled = false; this.innerHTML = 'Guardar Tarea'; });
             document.getElementById('updateTaskBtn').addEventListener('click', function() { const id = document.getElementById('editTaskId').value; const selectedTags = Array.from(document.querySelectorAll('#editTaskTagsContainer .tag-selector-pill.active')).map(pill => pill.dataset.value); taskManager.updateTask(id, { title: document.getElementById('editTaskTitle').value.trim(), description: document.getElementById('editTaskDescription').value.trim(), date: document.getElementById('editTaskDate').value, status: document.getElementById('editTaskStatus').value, priority: document.getElementById('editTaskPriority').value, tags: selectedTags }); bootstrap.Modal.getInstance(document.getElementById('editTaskModal')).hide(); showAlert('Tarea actualizada.', 'info'); });
-            document.getElementById('deleteTaskFromDetailBtn').addEventListener('click', function() { const id = this.dataset.id; if (confirm('¿Seguro que deseas eliminar esta tarea?')) { taskManager.deleteTask(id); bootstrap.Modal.getInstance(document.getElementById('taskDetailModal')).hide(); showAlert('Tarea eliminada.', 'danger'); } });
+            document.getElementById('deleteTaskFromDetailBtn').addEventListener('click', function() { if (confirm('¿Seguro que deseas eliminar esta tarea?')) { taskManager.deleteTask(this.dataset.id); bootstrap.Modal.getInstance(document.getElementById('taskDetailModal')).hide(); showAlert('Tarea eliminada.', 'danger'); } });
             document.getElementById('editTaskFromDetailBtn').addEventListener('click', function() { const id = this.dataset.id; bootstrap.Modal.getInstance(document.getElementById('taskDetailModal')).hide(); taskManager.openEditModal(id); });
             document.querySelectorAll('.filter-btn').forEach(btn => { btn.addEventListener('click', function() { document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active')); this.classList.add('active'); taskManager.currentFilter = this.dataset.filter; document.getElementById('tagFilterDropdown').value = 'all'; document.getElementById('taskListTitle').textContent = `Lista de Tareas`; taskManager.renderTasks(); if (offcanvasElement.classList.contains('show')) { offcanvas.hide(); } }); });
             document.getElementById('tagFilterDropdown').addEventListener('change', function() { taskManager.currentFilter = this.value; document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active')); document.querySelector('.filter-btn[data-filter="all"]').classList.add('active'); document.getElementById('taskListTitle').textContent = `Lista de Tareas`; taskManager.renderTasks(); });
-            document.getElementById('downloadCompletedBtn').addEventListener('click', () => { taskManager.exportCompletedTasksToExcel(); });
-            
-            // Event listener for Google Sheets sync button
-            document.getElementById('syncGoogleSheetsBtn').addEventListener('click', () => {
-                tokenClient.callback = async (resp) => {
-                    if (resp.error !== undefined) {
-                        showAlert('Error de autenticación con Google.', 'danger');
-                        throw (resp);
-                    }
-                    await taskManager.exportCompletedTasksToGoogleSheets();
-                };
+            document.getElementById('downloadCompletedBtn').addEventListener('click', () => taskManager.exportCompletedTasksToExcel());
+            document.getElementById('syncGoogleSheetsBtn').addEventListener('click', () => { tokenClient.callback = async (resp) => { if (resp.error) throw(resp); await taskManager.exportCompletedTasksToGoogleSheets(); }; if (gapi.client.getToken() === null) { tokenClient.requestAccessToken({prompt: 'consent'}); } else { tokenClient.requestAccessToken({prompt: ''}); } });
 
-                if (gapi.client.getToken() === null) {
-                    tokenClient.requestAccessToken({prompt: 'consent'});
-                } else {
-                    tokenClient.requestAccessToken({prompt: ''});
-                }
-            });
-
-            document.querySelectorAll('input[type="date"]').forEach(input => {
-                const today = new Date();
-                const year = today.getFullYear();
-                const month = String(today.getMonth() + 1).padStart(2, '0');
-                const day = String(today.getDate()).padStart(2, '0');
-                input.min = `${year}-${month}-${day}`;
-            });
+            document.querySelectorAll('input[type="date"]').forEach(input => { input.min = new Date().toLocaleDateString('en-ca'); });
             
-            // --- Final Initialization Steps ---
             populateTagSelectors();
             populateTagFilterDropdown();
             taskManager.initCalendar();
