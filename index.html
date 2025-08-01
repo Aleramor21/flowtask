@@ -169,7 +169,8 @@
                                 <div><div class="stats-value" id="completedTasks">0</div><div class="stats-label">Completadas</div></div>
                                 <div class="stats-actions">
                                     <button id="downloadCompletedBtn" class="btn btn-sm btn-outline-success" data-bs-toggle="tooltip" title="Descargar en Excel"><i class="bi bi-file-earmark-arrow-down-fill"></i></button>
-                                    <button id="syncGoogleSheetsBtn" class="btn btn-sm btn-outline-info" data-bs-toggle="tooltip" title="Cargando API de Google..." disabled><i class="bi bi-google"></i></button>
+                                    <!-- SOLUCIÓN HTML: Eliminamos data-bs-toggle del botón de Google para evitar inicialización prematura -->
+                                    <button id="syncGoogleSheetsBtn" class="btn btn-sm btn-outline-info" title="Cargando API de Google..." disabled><i class="bi bi-google"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -228,18 +229,14 @@
             if (gapiInited && gisInited) {
                 const syncBtn = document.getElementById('syncGoogleSheetsBtn');
                 if (syncBtn) {
+                    // --- SOLUCIÓN JS: Estrategia robusta para activar el botón y su tooltip ---
+                    // 1. Habilitar el botón.
                     syncBtn.disabled = false;
-
-                    // --- SOLUCIÓN: MANEJO ROBUSTO DEL TOOLTIP ---
-                    // 1. Obtener la instancia de tooltip existente (si es que hay una).
-                    const existingTooltip = bootstrap.Tooltip.getInstance(syncBtn);
-                    // 2. Si existe, destruirla para evitar conflictos.
-                    if (existingTooltip) {
-                        existingTooltip.dispose();
-                    }
-                    // 3. Actualizar el atributo 'title' con el nuevo texto.
+                    // 2. Establecer el título correcto.
                     syncBtn.setAttribute('title', 'Sincronizar con Google Sheets');
-                    // 4. Crear una instancia de tooltip completamente nueva sobre el botón ya habilitado.
+                    // 3. Añadir el atributo para que Bootstrap sepa que debe manejarlo.
+                    syncBtn.setAttribute('data-bs-toggle', 'tooltip');
+                    // 4. Crear una nueva instancia de Tooltip sobre el botón ya habilitado y configurado.
                     new bootstrap.Tooltip(syncBtn);
                     
                     console.log("Google API features are now ready.");
@@ -283,11 +280,35 @@
                 deleteTask(id) { const taskIndex = this.tasks.findIndex(t => t.id === id); if (taskIndex > -1) { this.tasks.splice(taskIndex, 1); this.saveToLocalStorage(); this.refreshUI(); return true; } return false; }
                 getTaskById(id) { return this.tasks.find(t => t.id === id); }
                 getFilteredTasks() { let filtered = [...this.tasks]; if (this.currentFilter.startsWith('date-')) { const date = this.currentFilter.substring(5); return this.tasks.filter(t => t.date === date); } if (this.currentFilter !== 'all') { if (this.currentFilter.startsWith('tag-')) { const tag = this.currentFilter.substring(4); filtered = filtered.filter(t => t.tags.includes(tag)); } else { filtered = filtered.filter(t => t.status === this.currentFilter); } } return filtered.sort((a, b) => { const priorityOrder = { high: 0, medium: 1, low: 2 }; if (a.date && b.date) return new Date(a.date) - new Date(b.date); if (a.date) return -1; if (b.date) return 1; return priorityOrder[a.priority] - priorityOrder[b.priority]; }); }
-                updateStats() { const total = this.tasks.length; const inProgress = this.tasks.filter(t => t.status === 'process').length; const completed = this.tasks.filter(t => t.status === 'done').length; const todayStr = new Date().toISOString().split('T')[0]; const todayTasks = this.tasks.filter(t => t.date === todayStr && t.status !== 'done').length; document.getElementById('totalTasks').textContent = total; document.getElementById('inProgressTasks').textContent = inProgress; document.getElementById('completedTasks').textContent = completed; document.getElementById('todayTasks').textContent = todayTasks; const todayTasksCard = document.getElementById('todayTasks').closest('.stats-card'); if (todayTasks > 0) { todayTasksCard.classList.add('has-today-tasks'); } else { todayTasksCard.classList.remove('has-today-tasks'); } }
+                updateStats() { 
+                    const total = this.tasks.length; 
+                    const inProgress = this.tasks.filter(t => t.status === 'process').length; 
+                    const completed = this.tasks.filter(t => t.status === 'done').length; 
+
+                    // --- SOLUCIÓN: CORRECCIÓN DE ZONA HORARIA ---
+                    // Genera la fecha de "hoy" basándose en la zona horaria local del usuario, no en UTC.
+                    const today = new Date();
+                    const year = today.getFullYear();
+                    const month = String(today.getMonth() + 1).padStart(2, '0');
+                    const day = String(today.getDate()).padStart(2, '0');
+                    const todayStr = `${year}-${month}-${day}`;
+                    
+                    const todayTasks = this.tasks.filter(t => t.date === todayStr && t.status !== 'done').length; 
+                    document.getElementById('totalTasks').textContent = total; 
+                    document.getElementById('inProgressTasks').textContent = inProgress; 
+                    document.getElementById('completedTasks').textContent = completed; 
+                    document.getElementById('todayTasks').textContent = todayTasks; 
+                    const todayTasksCard = document.getElementById('todayTasks').closest('.stats-card'); 
+                    if (todayTasks > 0) { 
+                        todayTasksCard.classList.add('has-today-tasks'); 
+                    } else { 
+                        todayTasksCard.classList.remove('has-today-tasks'); 
+                    } 
+                }
                 renderTasks() { const tasksContainer = document.getElementById('tasksList'); const filteredTasks = this.getFilteredTasks(); if (filteredTasks.length === 0) { tasksContainer.innerHTML = `<div class="text-center p-4 text-muted"><i class="bi bi-clipboard-x fs-2 my-3 d-block"></i><h5>No hay tareas que mostrar</h5><p>${this.currentFilter === 'all' ? 'Comienza agregando una nueva tarea.' : 'No se encontraron tareas con este filtro.'}</p></div>`; return; } tasksContainer.innerHTML = ''; filteredTasks.forEach(task => { const dateOptions = { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'UTC' }; const taskDate = task.date ? new Date(task.date).toLocaleDateString('es-ES', dateOptions) : 'Sin fecha'; const tagsHtml = task.tags.map(tag => `<span class="tag tag-${tag.toLowerCase()}">${this.getLabel('tag', tag)}</span>`).join(''); const taskElement = document.createElement('div'); taskElement.className = 'task-item'; taskElement.dataset.id = task.id; taskElement.innerHTML = `<div class="d-flex justify-content-between align-items-center gap-3"><div class="flex-grow-1" style="cursor: pointer;" data-action="view"><div class="d-flex align-items-center mb-2"><span class="task-priority priority-${task.priority}"></span><h6 class="mb-0 me-3">${task.title}</h6><span class="badge rounded-pill" style="background-color: var(--${task.status === 'done' ? 'success' : 'primary'}-color);">${this.getLabel('status', task.status)}</span></div><div class="d-flex flex-wrap align-items-center gap-2 mb-1"><small class="text-muted"><i class="bi bi-calendar-event me-1"></i>${taskDate}</small>${tagsHtml ? '<div class="ms-2 task-tags-container">'+tagsHtml+'</div>' : ''}</div></div><div class="btn-group"><button class="btn btn-sm btn-outline-secondary edit-btn" aria-label="Editar"><i class="bi bi-pencil"></i></button></div></div>`; taskElement.querySelector('[data-action="view"]').addEventListener('click', (e) => { e.stopPropagation(); this.showTaskDetail(task.id); }); taskElement.querySelector('.edit-btn').addEventListener('click', (e) => { e.stopPropagation(); this.openEditModal(task.id); }); tasksContainer.appendChild(taskElement); }); }
                 showTaskDetail(id) { const task = this.getTaskById(id); if (!task) return; const detailModal = new bootstrap.Modal(document.getElementById('taskDetailModal')); document.getElementById('detailTaskTitle').textContent = task.title; document.getElementById('detailTaskDescription').textContent = task.description || 'Sin detalles.'; const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }; document.getElementById('detailTaskDate').textContent = task.date ? new Date(task.date).toLocaleDateString('es-ES', dateOptions) : 'Sin fecha'; document.getElementById('detailTaskStatusWrapper').innerHTML = `<span class="badge rounded-pill">${this.getLabel('status', task.status)}</span>`; document.getElementById('detailTaskPriority').innerHTML = `<span class="task-priority priority-${task.priority}"></span> ${this.getLabel('priority', task.priority)}`; document.getElementById('detailTaskTags').innerHTML = task.tags.length > 0 ? task.tags.map(tag => `<span class="tag tag-${tag.toLowerCase()}">${this.getLabel('tag', tag)}</span>`).join('') : '<span class="text-muted">Sin etiquetas</span>'; document.getElementById('deleteTaskFromDetailBtn').dataset.id = id; document.getElementById('editTaskFromDetailBtn').dataset.id = id; detailModal.show(); }
                 openEditModal(id) { const task = this.getTaskById(id); if (!task) return; const editModal = new bootstrap.Modal(document.getElementById('editTaskModal')); document.getElementById('editTaskId').value = task.id; document.getElementById('editTaskTitle').value = task.title; document.getElementById('editTaskDescription').value = task.description || ''; document.getElementById('editTaskDate').value = task.date || ''; document.getElementById('editTaskStatus').value = task.status; document.getElementById('editTaskPriority').value = task.priority; document.querySelectorAll('#editTaskTagsContainer .tag-selector-pill').forEach(pill => { pill.classList.toggle('active', task.tags.includes(pill.dataset.value)); }); editModal.show(); }
-                handleDayCellMount(info) { const dateStr = info.date.toISOString().split('T')[0]; const tasksOnDay = this.tasks.filter(t => t.date === dateStr); if (tasksOnDay.length > 0) { info.el.classList.add('day-with-task'); const taskTitles = tasksOnDay.map(t => `• ${t.title}`).join('\n'); info.el.setAttribute('data-bs-toggle', 'tooltip'); info.el.setAttribute('data-bs-placement', 'top'); info.el.setAttribute('title', taskTitles); } }
+                handleDayCellMount(info) { const dateStr = info.dateStr; const tasksOnDay = this.tasks.filter(t => t.date === dateStr); if (tasksOnDay.length > 0) { info.el.classList.add('day-with-task'); const taskTitles = tasksOnDay.map(t => `• ${t.title}`).join('\n'); info.el.setAttribute('data-bs-toggle', 'tooltip'); info.el.setAttribute('data-bs-placement', 'top'); info.el.setAttribute('title', taskTitles); } }
                 initCalendar() { const calendarEl = document.getElementById('calendar'); this.calendar = new FullCalendar.Calendar(calendarEl, { initialView: 'dayGridMonth', locale: 'es', height: '100%', headerToolbar: { left: 'prev', center: 'title', right: 'next today' }, dayCellDidMount: this.handleDayCellMount.bind(this), dateClick: this.handleDateClick.bind(this) }); this.calendar.render(); }
                 refreshUI() { this.updateStats(); this.renderTasks(); if (this.calendar) { this.calendar.render(); const tooltipTriggerList = [].slice.call(document.querySelectorAll('#calendar [data-bs-toggle="tooltip"]')); tooltipTriggerList.map(function (tooltipTriggerEl) { return new bootstrap.Tooltip(tooltipTriggerEl); }); } }
                 handleDateClick(info) { this.currentFilter = `date-${info.dateStr}`; document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active')); const dateForTitle = new Date(info.dateStr).toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }); document.getElementById('taskListTitle').textContent = ` Tareas para el ${dateForTitle}`; document.getElementById('tagFilterDropdown').value = 'all'; this.renderTasks(); if (document.getElementById('calendarViewContainer').style.display === 'block') { document.getElementById('toggleViewBtn').click(); } }
