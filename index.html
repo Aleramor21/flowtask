@@ -27,7 +27,6 @@
             --box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
             --transition: all 0.3s ease;
         }
-        
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--light-color); color: var(--dark-color); }
         .navbar { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); box-shadow: 0 4px 20px rgba(99, 102, 241, 0.2); position: sticky; top: 0; z-index: 1020; }
         .sidebar { background-color: white; border-right: 1px solid #e5e7eb; height: calc(100vh - 56px); position: sticky; top: 56px; overflow-y: auto; z-index: 1000; }
@@ -37,14 +36,12 @@
         .card-header { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; font-weight: 600; padding: 1rem 1.25rem; display: flex; align-items: center; justify-content: space-between; }
         .task-item { padding: 1rem; border-bottom: 1px solid #f3f4f6; transition: var(--transition); }
         .task-item:hover { background-color: #f9fafb; transform: translateX(5px); }
-        
         /* Stats card improvements */
         .stats-card { background: white; border: 1px solid #e5e7eb; border-radius: var(--border-radius); padding: 20px; text-align: center; height: 100%; transition: var(--transition); display: flex; flex-direction: column; justify-content: space-between; }
         .stats-card:hover { transform: translateY(-3px); box-shadow: var(--box-shadow); }
         .stats-value { font-size: 2.5rem; font-weight: 700; margin-bottom: 5px; color: var(--primary-color); }
         .stats-label { color: var(--gray-color); font-size: 1rem; }
         .stats-actions { margin-top: 15px; }
-
         /* Calendar improvements */
         .calendar-container { position: relative; height: 65vh; }
         .fc .fc-button-primary { background-color: var(--primary-color) !important; border-color: var(--primary-color) !important; }
@@ -52,24 +49,20 @@
         .day-with-task { background-color: #eef2ff !important; cursor: pointer; }
         .fc-daygrid-day.day-with-task .fc-daygrid-day-number { font-weight: 700; text-decoration: underline; color: var(--primary-dark); }
         .fc-daygrid-day:hover { background-color: #e0e7ff !important; }
-
         /* Custom Tag Styles */
         .task-tags-container .tag, #detailTaskTags .tag { padding: 0.2em 0.6em; font-size: 0.75rem; font-weight: 600; border-radius: 20px; color: white; margin-right: 5px; margin-bottom: 5px; display: inline-block; }
         .tag-work { background-color: #3b82f6; } .tag-personal { background-color: #ec4899; } .tag-urgent { background-color: #ef4444; } .tag-important { background-color: #f97316; } .tag-reunion { background-color: #8b5cf6; } .tag-proyecto { background-color: #14b8a6; } .tag-estudio { background-color: #f59e0b; } .tag-social { background-color: #0ea5e9; } .tag-salud { background-color: #22c55e; } .tag-familiares { background-color: #6366f1; }
         .tag-cumpleanos { background-color: #facc15; color: #422006;} /* New Tag: Gold */
-        
         /* Tag Pill Selector for Modals */
         .tag-selector-container { display: flex; flex-wrap: wrap; gap: 8px; }
         .tag-selector-pill { cursor: pointer; padding: 5px 12px; border: 1px solid #dee2e6; border-radius: 20px; font-size: 0.9rem; transition: all 0.2s ease; background-color: #f8f9fa; }
         .tag-selector-pill.active { background-color: var(--primary-color); color: white; border-color: var(--primary-color); }
-        
         /* Pulse animation for 'Today's tasks' card */
         @keyframes pulse-glow {
             0%, 100% { box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08), 0 0 0 0 rgba(99, 102, 241, 0.4); }
             50% { box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08), 0 0 20px 5px rgba(99, 102, 241, 0.1); }
         }
         .stats-card.has-today-tasks { animation: pulse-glow 2.5s infinite ease-in-out; }
-
         /* Tag Filter Dropdown Style */
         .card-header .form-select {
             background-color: rgba(255, 255, 255, 0.2);
@@ -83,26 +76,17 @@
         .card-header .form-select:focus {
             box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
         }
-        
-        /* Priority Indicator Styles */
-        .task-priority { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; vertical-align: middle; }
-        .priority-high { background-color: var(--danger-color); }
-        .priority-medium { background-color: var(--warning-color); }
-        .priority-low { background-color: var(--success-color); }
     </style>
 </head>
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark"><div class="container-fluid"><a class="navbar-brand" href="#"><i class="bi bi-kanban-fill me-2"></i>TaskFlow Pro</a></div></nav>
-
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
             <aside class="col-lg-3 col-xl-2 sidebar px-0"><div class="p-4"><button class="btn btn-primary w-100 mb-4" data-bs-toggle="modal" data-bs-target="#addTaskModal"><i class="bi bi-plus-circle-fill me-2"></i> Nueva Tarea</button><h5 class="mb-3 text-muted small text-uppercase">Filtros</h5><div class="mb-4"><h6 class="mb-3">Estado</h6><div class="d-grid gap-2"><button class="btn btn-light text-start filter-btn active" data-filter="all"><i class="bi bi-list-task me-2"></i> Todas</button><button class="btn btn-light text-start filter-btn" data-filter="created"><i class="bi bi-plus-circle me-2"></i> Creadas</button><button class="btn btn-light text-start filter-btn" data-filter="process"><i class="bi bi-arrow-repeat me-2"></i> En Proceso</button><button class="btn btn-light text-start filter-btn" data-filter="done"><i class="bi bi-check-circle me-2"></i> Terminadas</button></div></div><div><h6 class="mb-3">Etiquetas Populares</h6><div class="d-grid gap-2"><button class="btn btn-light text-start filter-btn" data-filter="tag-work"><i class="bi bi-briefcase me-2 text-primary"></i> Trabajo</button><button class="btn btn-light text-start filter-btn" data-filter="tag-personal"><i class="bi bi-person me-2" style="color:#ec4899;"></i> Personal</button></div></div></div></aside>
-
             <!-- Main Content -->
             <main class="col-lg-9 col-xl-10 main-content">
-                <!-- This container-fluid was restored to fix the layout -->
                 <div class="container-fluid">
                     <!-- Stats Row -->
                     <div class="row">
@@ -119,10 +103,8 @@
                         </div>
                         <div class="col-md-6 col-lg-3 mb-3"><div class="stats-card"><div><div class="stats-value" id="todayTasks">0</div><div class="stats-label">Para Hoy</div></div></div></div>
                     </div>
-
                     <!-- View Toggle Button -->
                     <div class="d-flex justify-content-end mb-3"><button class="btn btn-outline-primary" id="toggleViewBtn"><i class="bi bi-calendar-week me-2"></i> Ver Calendario</button></div>
-
                     <!-- Task List & Calendar Containers -->
                     <div id="taskListContainer"><div class="card">
                         <div class="card-header">
@@ -143,15 +125,12 @@
             </main>
         </div>
     </div>
-
     <!-- Modals (Add, Edit, Detail) -->
     <div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="addTaskModalLabel"><i class="bi bi-plus-circle me-2"></i> Nueva Tarea</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body p-4"><form id="addTaskForm" novalidate><div class="row g-3"><div class="col-12"><label for="taskTitle" class="form-label">Título <span class="text-danger">*</span></label><input type="text" class="form-control" id="taskTitle" required></div><div class="col-12"><label for="taskDescription" class="form-label">Detalles</label><textarea class="form-control" id="taskDescription" rows="3"></textarea></div><div class="col-md-6"><label for="taskDate" class="form-label">Fecha</label><input type="date" class="form-control" id="taskDate"></div><div class="col-md-6"><label for="taskStatus" class="form-label">Estado</label><select class="form-select" id="taskStatus"><option value="created">Creado</option><option value="process">En Proceso</option><option value="done">Terminado</option></select></div><div class="col-md-6"><label for="taskPriority" class="form-label">Prioridad</label><select class="form-select" id="taskPriority"><option value="low">Baja</option><option value="medium" selected>Media</option><option value="high">Alta</option></select></div><div class="col-12"><label class="form-label">Etiquetas</label><div id="addTaskTagsContainer" class="tag-selector-container"></div></div></div></form></div><div class="modal-footer"><button type="button" class="btn btn-light border" data-bs-dismiss="modal">Cancelar</button><button type="button" class="btn btn-primary px-4" id="saveTaskBtn">Guardar Tarea</button></div></div></div></div>
     <div class="modal fade" id="editTaskModal" tabindex="-1" aria-labelledby="editTaskModalLabel" aria-hidden="true"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="editTaskModalLabel"><i class="bi bi-pencil-square me-2"></i> Editar Tarea</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body p-4"><form id="editTaskForm"><input type="hidden" id="editTaskId"><div class="row g-3"><div class="col-12"><label for="editTaskTitle" class="form-label">Título</label><input type="text" class="form-control" id="editTaskTitle" required></div><div class="col-12"><label for="editTaskDescription" class="form-label">Detalles</label><textarea class="form-control" id="editTaskDescription" rows="3"></textarea></div><div class="col-md-6"><label for="editTaskDate" class="form-label">Fecha</label><input type="date" class="form-control" id="editTaskDate"></div><div class="col-md-6"><label for="editTaskStatus" class="form-label">Estado</label><select class="form-select" id="editTaskStatus"><option value="created">Creado</option><option value="process">En Proceso</option><option value="done">Terminado</option></select></div><div class="col-md-6"><label for="editTaskPriority" class="form-label">Prioridad</label><select class="form-select" id="editTaskPriority"><option value="low">Baja</option><option value="medium">Media</option><option value="high">Alta</option></select></div><div class="col-12"><label class="form-label">Etiquetas</label><div id="editTaskTagsContainer" class="tag-selector-container"></div></div></div></form></div><div class="modal-footer"><button type="button" class="btn btn-light border" data-bs-dismiss="modal">Cancelar</button><button type="button" class="btn btn-primary" id="updateTaskBtn">Actualizar Tarea</button></div></div></div></div>
     <div class="modal fade" id="taskDetailModal" tabindex="-1" aria-labelledby="taskDetailModalLabel" aria-hidden="true"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="taskDetailModalLabel"><span id="detailTaskTitle"></span></h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body p-4"><div class="row g-4"><div class="col-12"><h6 class="text-muted">Detalles</h6><div id="detailTaskDescription" class="p-3 bg-light border rounded"></div></div><div class="col-md-6"><h6 class="text-muted">Fecha de vencimiento</h6><p id="detailTaskDate" class="mb-0"></p></div><div class="col-md-6"><h6 class="text-muted">Estado</h6><p id="detailTaskStatusWrapper" class="mb-0"></p></div><div class="col-md-6"><h6 class="text-muted">Prioridad</h6><p id="detailTaskPriority" class="d-flex align-items-center mb-0"></p></div><div class="col-12"><h6 class="text-muted">Etiquetas</h6><div id="detailTaskTags"></div></div></div></div><div class="modal-footer"><button type="button" class="btn btn-danger me-auto" id="deleteTaskFromDetailBtn"><i class="bi bi-trash-fill me-2"></i>Eliminar</button><button type="button" class="btn btn-light border" data-bs-dismiss="modal">Cerrar</button><button type="button" class="btn btn-warning" id="editTaskFromDetailBtn"><i class="bi bi-pencil-fill me-2"></i>Editar</button></div></div></div></div>
-    
     <!-- Alert Container -->
     <div class="position-fixed top-0 end-0 p-3" style="z-index: 1056;"><div id="alertContainer"></div></div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
     <script>
@@ -160,7 +139,6 @@
         const SPREADSHEET_ID = '1Jne2Gbc_8ve9gmuWYaOnlagr_ZrhHyqJNpNH0wtFthE';
         const SCOPES = 'https://www.googleapis.com/auth/spreadsheets';
         const SHEET_NAME = 'Tareas Completadas';
-
         let tokenClient;
         let gapiInited = false;
         let gisInited = false;
@@ -195,14 +173,14 @@
             tokenClient = google.accounts.oauth2.initTokenClient({
                 client_id: CLIENT_ID,
                 scope: SCOPES,
-                callback: '',
+                ux_mode: 'popup', // <-- Crucial para móviles
+                callback: '', // will be set dynamically
             });
             gisInited = true;
             checkAndEnableGoogleApiFeatures();
         }
+
         // --- End Google API Integration ---
-
-
         document.addEventListener('DOMContentLoaded', function() {
             class TaskManager {
                 constructor() { this.tasks = this.loadFromLocalStorage(); this.currentFilter = 'all'; this.calendar = null; }
@@ -214,23 +192,23 @@
                 getFilteredTasks() { let filtered = [...this.tasks]; if (this.currentFilter.startsWith('date-')) { const date = this.currentFilter.substring(5); return this.tasks.filter(t => t.date === date); } if (this.currentFilter !== 'all') { if (this.currentFilter.startsWith('tag-')) { const tag = this.currentFilter.substring(4); filtered = filtered.filter(t => t.tags.includes(tag)); } else { filtered = filtered.filter(t => t.status === this.currentFilter); } } return filtered.sort((a, b) => { const priorityOrder = { high: 0, medium: 1, low: 2 }; if (a.date && b.date) return new Date(a.date) - new Date(b.date); if (a.date) return -1; if (b.date) return 1; return priorityOrder[a.priority] - priorityOrder[b.priority]; }); }
                 updateStats() { const total = this.tasks.length; const inProgress = this.tasks.filter(t => t.status === 'process').length; const completed = this.tasks.filter(t => t.status === 'done').length; const todayStr = new Date().toISOString().split('T')[0]; const todayTasks = this.tasks.filter(t => t.date === todayStr && t.status !== 'done').length; document.getElementById('totalTasks').textContent = total; document.getElementById('inProgressTasks').textContent = inProgress; document.getElementById('completedTasks').textContent = completed; document.getElementById('todayTasks').textContent = todayTasks; const todayTasksCard = document.getElementById('todayTasks').closest('.stats-card'); if (todayTasks > 0) { todayTasksCard.classList.add('has-today-tasks'); } else { todayTasksCard.classList.remove('has-today-tasks'); } }
                 renderTasks() { const tasksContainer = document.getElementById('tasksList'); const filteredTasks = this.getFilteredTasks(); if (filteredTasks.length === 0) { tasksContainer.innerHTML = `<div class="text-center p-4 text-muted"><i class="bi bi-clipboard-x fs-2 my-3 d-block"></i><h5>No hay tareas que mostrar</h5><p>${this.currentFilter === 'all' ? 'Comienza agregando una nueva tarea.' : 'No se encontraron tareas con este filtro.'}</p></div>`; return; } tasksContainer.innerHTML = ''; filteredTasks.forEach(task => { const dateOptions = { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'UTC' }; const taskDate = task.date ? new Date(task.date).toLocaleDateString('es-ES', dateOptions) : 'Sin fecha'; const tagsHtml = task.tags.map(tag => `<span class="tag tag-${tag.toLowerCase()}">${this.getLabel('tag', tag)}</span>`).join(''); const taskElement = document.createElement('div'); taskElement.className = 'task-item'; taskElement.dataset.id = task.id; taskElement.innerHTML = `<div class="d-flex justify-content-between align-items-center gap-3"><div class="flex-grow-1" style="cursor: pointer;" data-action="view"><div class="d-flex align-items-center mb-2"><span class="task-priority priority-${task.priority}"></span><h6 class="mb-0 me-3">${task.title}</h6><span class="badge rounded-pill" style="background-color: var(--${task.status === 'done' ? 'success' : 'primary'}-color);">${this.getLabel('status', task.status)}</span></div><div class="d-flex flex-wrap align-items-center gap-2 mb-1"><small class="text-muted"><i class="bi bi-calendar-event me-1"></i>${taskDate}</small>${tagsHtml ? '<div class="ms-2 task-tags-container">'+tagsHtml+'</div>' : ''}</div></div><div class="btn-group"><button class="btn btn-sm btn-outline-secondary edit-btn" aria-label="Editar"><i class="bi bi-pencil"></i></button></div></div>`; taskElement.querySelector('[data-action="view"]').addEventListener('click', (e) => { e.stopPropagation(); this.showTaskDetail(task.id); }); taskElement.querySelector('.edit-btn').addEventListener('click', (e) => { e.stopPropagation(); this.openEditModal(task.id); }); tasksContainer.appendChild(taskElement); }); }
-                showTaskDetail(id) { const task = this.getTaskById(id); if (!task) return; const detailModal = new bootstrap.Modal(document.getElementById('taskDetailModal')); document.getElementById('detailTaskTitle').textContent = task.title; document.getElementById('detailTaskDescription').textContent = task.description || 'Sin detalles.'; const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }; document.getElementById('detailTaskDate').textContent = task.date ? new Date(task.date).toLocaleDateString('es-ES', dateOptions) : 'Sin fecha'; document.getElementById('detailTaskStatusWrapper').innerHTML = `<span class="badge rounded-pill" style="background-color: var(--${task.status === 'done' ? 'success' : 'primary'}-color);">${this.getLabel('status', task.status)}</span>`; document.getElementById('detailTaskPriority').innerHTML = `<span class="task-priority priority-${task.priority}"></span> ${this.getLabel('priority', task.priority)}`; document.getElementById('detailTaskTags').innerHTML = task.tags.length > 0 ? task.tags.map(tag => `<span class="tag tag-${tag.toLowerCase()}">${this.getLabel('tag', tag)}</span>`).join('') : '<span class="text-muted">Sin etiquetas</span>'; document.getElementById('deleteTaskFromDetailBtn').dataset.id = id; document.getElementById('editTaskFromDetailBtn').dataset.id = id; detailModal.show(); }
+                showTaskDetail(id) { const task = this.getTaskById(id); if (!task) return; const detailModal = new bootstrap.Modal(document.getElementById('taskDetailModal')); document.getElementById('detailTaskTitle').textContent = task.title; document.getElementById('detailTaskDescription').textContent = task.description || 'Sin detalles.'; const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }; document.getElementById('detailTaskDate').textContent = task.date ? new Date(task.date).toLocaleDateString('es-ES', dateOptions) : 'Sin fecha'; document.getElementById('detailTaskStatusWrapper').innerHTML = `<span class="badge rounded-pill">${this.getLabel('status', task.status)}</span>`; document.getElementById('detailTaskPriority').innerHTML = `<span class="task-priority priority-${task.priority}"></span> ${this.getLabel('priority', task.priority)}`; document.getElementById('detailTaskTags').innerHTML = task.tags.length > 0 ? task.tags.map(tag => `<span class="tag tag-${tag.toLowerCase()}">${this.getLabel('tag', tag)}</span>`).join('') : '<span class="text-muted">Sin etiquetas</span>'; document.getElementById('deleteTaskFromDetailBtn').dataset.id = id; document.getElementById('editTaskFromDetailBtn').dataset.id = id; detailModal.show(); }
                 openEditModal(id) { const task = this.getTaskById(id); if (!task) return; const editModal = new bootstrap.Modal(document.getElementById('editTaskModal')); document.getElementById('editTaskId').value = task.id; document.getElementById('editTaskTitle').value = task.title; document.getElementById('editTaskDescription').value = task.description || ''; document.getElementById('editTaskDate').value = task.date || ''; document.getElementById('editTaskStatus').value = task.status; document.getElementById('editTaskPriority').value = task.priority; document.querySelectorAll('#editTaskTagsContainer .tag-selector-pill').forEach(pill => { pill.classList.toggle('active', task.tags.includes(pill.dataset.value)); }); editModal.show(); }
                 handleDayCellMount(info) { const dateStr = info.date.toISOString().split('T')[0]; const tasksOnDay = this.tasks.filter(t => t.date === dateStr); if (tasksOnDay.length > 0) { info.el.classList.add('day-with-task'); const taskTitles = tasksOnDay.map(t => `• ${t.title}`).join('\n'); info.el.setAttribute('data-bs-toggle', 'tooltip'); info.el.setAttribute('data-bs-placement', 'top'); info.el.setAttribute('title', taskTitles); } }
                 initCalendar() { const calendarEl = document.getElementById('calendar'); this.calendar = new FullCalendar.Calendar(calendarEl, { initialView: 'dayGridMonth', locale: 'es', height: '100%', headerToolbar: { left: 'prev', center: 'title', right: 'next today' }, dayCellDidMount: this.handleDayCellMount.bind(this), dateClick: this.handleDateClick.bind(this) }); this.calendar.render(); }
                 refreshUI() { this.updateStats(); this.renderTasks(); if (this.calendar) { this.calendar.render(); const tooltipTriggerList = [].slice.call(document.querySelectorAll('#calendar [data-bs-toggle="tooltip"]')); tooltipTriggerList.map(function (tooltipTriggerEl) { return new bootstrap.Tooltip(tooltipTriggerEl); }); } }
                 handleDateClick(info) { this.currentFilter = `date-${info.dateStr}`; document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active')); const dateForTitle = new Date(info.dateStr).toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }); document.getElementById('taskListTitle').textContent = ` Tareas para el ${dateForTitle}`; document.getElementById('tagFilterDropdown').value = 'all'; this.renderTasks(); if (document.getElementById('calendarViewContainer').style.display === 'block') { document.getElementById('toggleViewBtn').click(); } }
                 exportCompletedTasksToExcel() { const completed = this.tasks.filter(task => task.status === 'done'); if (completed.length === 0) { showAlert('No hay tareas completadas para exportar.', 'info'); return; } const dataForExcel = completed.map(task => ({ 'Titulo de la Tarea': task.title, 'Detalles (descripción)': task.description, 'Fecha de vencimiento': task.date ? new Date(task.date).toLocaleDateString('es-ES', {timeZone: 'UTC'}) : 'N/A', 'Prioridad': this.getLabel('priority', task.priority), 'Etiquetas': task.tags.map(t => this.getLabel('tag', t)).join(', ') })); const worksheet = XLSX.utils.json_to_sheet(dataForExcel); const workbook = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(workbook, worksheet, "Tareas Completadas"); XLSX.writeFile(workbook, "mis_tareas_completadas.xlsx"); setTimeout(() => { if (confirm('Descarga completa. ¿Deseas eliminar las tareas completadas que has exportado?')) { this.tasks = this.tasks.filter(task => task.status !== 'done'); this.saveToLocalStorage(); this.refreshUI(); showAlert('Tareas completadas eliminadas.', 'success'); } }, 500); }
-                
                 async exportCompletedTasksToGoogleSheets() {
                     const syncBtn = document.getElementById('syncGoogleSheetsBtn');
+                    syncBtn.disabled = true;
+                    syncBtn.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`;
                     try {
                         const completed = this.tasks.filter(task => task.status === 'done');
                         if (completed.length === 0) {
                             showAlert('No hay tareas completadas para sincronizar.', 'info');
                             return;
                         }
-                        
                         const headers = ['Titulo de la Tarea', 'Detalles (descripción)', 'Fecha de vencimiento', 'Prioridad', 'Etiquetas'];
                         const dataForSheet = completed.map(task => ([
                             task.title,
@@ -240,19 +218,16 @@
                             task.tags.map(t => this.getLabel('tag', t)).join(', ')
                         ]));
                         dataForSheet.unshift(headers);
-
                         await gapi.client.sheets.spreadsheets.values.clear({
                             spreadsheetId: SPREADSHEET_ID,
                             range: `'${SHEET_NAME}'!A1:Z`,
                         });
-                        
                         await gapi.client.sheets.spreadsheets.values.update({
                             spreadsheetId: SPREADSHEET_ID,
                             range: `'${SHEET_NAME}'!A1`,
                             valueInputOption: 'USER_ENTERED',
                             resource: { values: dataForSheet }
                         });
-
                         showAlert('Tareas completadas sincronizadas con Google Sheets.', 'success');
                     } catch (err) {
                         showAlert('Error al sincronizar con Google Sheets. Revisa la consola.', 'danger');
@@ -262,66 +237,68 @@
                         syncBtn.innerHTML = `<i class="bi bi-google"></i>`;
                     }
                 }
-
                 saveToLocalStorage() { try { localStorage.setItem('taskflow_pro_tasks', JSON.stringify(this.tasks)); } catch (e) { console.error("Error al guardar en localStorage:", e); showAlert('No se pudieron guardar los cambios.', 'danger'); } }
                 loadFromLocalStorage() { try { const savedTasks = localStorage.getItem('taskflow_pro_tasks'); return savedTasks ? JSON.parse(savedTasks) : []; } catch (e) { console.error("Error al cargar de localStorage:", e); return []; } }
                 getLabel(type, key) { const labels = { status: { created: 'Creado', process: 'En Proceso', done: 'Terminado' }, priority: { low: 'Baja', medium: 'Media', high: 'Alta' }, tag: { work: 'Trabajo', personal: 'Personal', urgent: 'Urgente', important: 'Importante', reunion: 'Reunión', proyecto: 'Proyecto', estudio: 'Estudio', social: 'Post RRSS', salud: 'Salud', familiares: 'Familiares', cumpleanos: 'Cumpleaños' } }; if (key === undefined) { return labels[type]; } return (labels[type] && labels[type][key]) || key; }
             }
-            
+
             const taskManager = new TaskManager();
 
             function populateTagSelectors() { const tagOptions = taskManager.getLabel('tag'); const addContainer = document.getElementById('addTaskTagsContainer'); const editContainer = document.getElementById('editTaskTagsContainer'); if (!addContainer || !editContainer || !tagOptions) return; addContainer.innerHTML = ''; editContainer.innerHTML = ''; for (const [value, label] of Object.entries(tagOptions)) { const pillHTML = `<span class="tag-selector-pill" data-value="${value}">${label}</span>`; addContainer.insertAdjacentHTML('beforeend', pillHTML); editContainer.insertAdjacentHTML('beforeend', pillHTML); } document.querySelectorAll('.tag-selector-pill').forEach(pill => { pill.addEventListener('click', (e) => { e.currentTarget.classList.toggle('active'); }); }); }
+
             function populateTagFilterDropdown() { const dropdown = document.getElementById('tagFilterDropdown'); if (!dropdown) return; const tagOptions = taskManager.getLabel('tag'); dropdown.innerHTML = '<option value="all">Filtrar por Etiqueta</option>'; for (const [value, label] of Object.entries(tagOptions)) { const option = document.createElement('option'); option.value = `tag-${value}`; option.textContent = label; dropdown.appendChild(option); } }
 
             const addTaskModal = new bootstrap.Modal(document.getElementById('addTaskModal'));
-            document.getElementById('toggleViewBtn').addEventListener('click', () => { const isCalendarVisible = document.getElementById('calendarViewContainer').style.display === 'block'; if (isCalendarVisible) { document.getElementById('calendarViewContainer').style.display = 'none'; document.getElementById('taskListContainer').style.display = 'block'; document.getElementById('toggleViewBtn').innerHTML = `<i class="bi bi-calendar-week me-2"></i> Ver Calendario`; } else { document.getElementById('taskListContainer').style.display = 'none'; document.getElementById('calendarViewContainer').style.display = 'block'; document.getElementById('toggleViewBtn').innerHTML = `<i class="bi bi-list-task me-2"></i> Ver Lista de Tareas`; taskManager.calendar.updateSize(); } });
-            document.getElementById('saveTaskBtn').addEventListener('click', function() { const titleInput = document.getElementById('taskTitle'); if (!titleInput.value.trim()) { showAlert('El título es obligatorio.', 'warning'); titleInput.focus(); return; } const saveBtn = this; saveBtn.disabled = true; saveBtn.innerHTML = `<span class="spinner-border spinner-border-sm"></span> Guardando...`; const selectedTags = Array.from(document.querySelectorAll('#addTaskTagsContainer .tag-selector-pill.active')).map(pill => pill.dataset.value); taskManager.addTask({ title: titleInput.value.trim(), description: document.getElementById('taskDescription').value.trim(), date: document.getElementById('taskDate').value, status: document.getElementById('taskStatus').value, priority: document.getElementById('taskPriority').value, tags: selectedTags }); document.getElementById('addTaskForm').reset(); document.querySelectorAll('#addTaskTagsContainer .tag-selector-pill.active').forEach(p => p.classList.remove('active')); addTaskModal.hide(); showAlert('Tarea agregada.', 'success'); saveBtn.disabled = false; saveBtn.innerHTML = 'Guardar Tarea'; });
-            document.getElementById('updateTaskBtn').addEventListener('click', function() { const id = document.getElementById('editTaskId').value; const selectedTags = Array.from(document.querySelectorAll('#editTaskTagsContainer .tag-selector-pill.active')).map(pill => pill.dataset.value); taskManager.updateTask(id, { title: document.getElementById('editTaskTitle').value.trim(), description: document.getElementById('editTaskDescription').value.trim(), date: document.getElementById('editTaskDate').value, status: document.getElementById('editTaskStatus').value, priority: document.getElementById('editTaskPriority').value, tags: selectedTags }); bootstrap.Modal.getInstance(document.getElementById('editTaskModal')).hide(); showAlert('Tarea actualizada.', 'info'); });
-            document.getElementById('deleteTaskFromDetailBtn').addEventListener('click', function() { const id = this.dataset.id; if (confirm('¿Seguro que deseas eliminar esta tarea?')) { taskManager.deleteTask(id); bootstrap.Modal.getInstance(document.getElementById('taskDetailModal')).hide(); showAlert('Tarea eliminada.', 'danger'); } });
-            document.getElementById('editTaskFromDetailBtn').addEventListener('click', function() { const id = this.dataset.id; bootstrap.Modal.getInstance(document.getElementById('taskDetailModal')).hide(); taskManager.openEditModal(id); });
-            document.querySelectorAll('.filter-btn').forEach(btn => { btn.addEventListener('click', function() { document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active')); this.classList.add('active'); taskManager.currentFilter = this.dataset.filter; document.getElementById('tagFilterDropdown').value = 'all'; document.getElementById('taskListTitle').textContent = `Lista de Tareas`; taskManager.renderTasks(); }); });
-            document.getElementById('tagFilterDropdown').addEventListener('change', function() { taskManager.currentFilter = this.value; document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active')); document.querySelector('.filter-btn[data-filter="all"]').classList.add('active'); document.getElementById('taskListTitle').textContent = `Lista de Tareas`; taskManager.renderTasks(); });
-            document.getElementById('downloadCompletedBtn').addEventListener('click', () => { taskManager.exportCompletedTasksToExcel(); });
-            
-            // CORRECTED Event listener for Google Sheets sync button
-            document.getElementById('syncGoogleSheetsBtn').addEventListener('click', () => {
-                const syncBtn = document.getElementById('syncGoogleSheetsBtn');
-                
-                syncBtn.disabled = true;
-                syncBtn.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`;
 
+            document.getElementById('toggleViewBtn').addEventListener('click', () => { const isCalendarVisible = document.getElementById('calendarViewContainer').style.display === 'block'; if (isCalendarVisible) { document.getElementById('calendarViewContainer').style.display = 'none'; document.getElementById('taskListContainer').style.display = 'block'; document.getElementById('toggleViewBtn').innerHTML = `<i class="bi bi-calendar-week me-2"></i> Ver Calendario`; } else { document.getElementById('taskListContainer').style.display = 'none'; document.getElementById('calendarViewContainer').style.display = 'block'; document.getElementById('toggleViewBtn').innerHTML = `<i class="bi bi-list-task me-2"></i> Ver Lista de Tareas`; taskManager.calendar.updateSize(); } });
+
+            document.getElementById('saveTaskBtn').addEventListener('click', function() { const titleInput = document.getElementById('taskTitle'); if (!titleInput.value.trim()) { showAlert('El título es obligatorio.', 'warning'); titleInput.focus(); return; } const saveBtn = this; saveBtn.disabled = true; saveBtn.innerHTML = `<span class="spinner-border spinner-border-sm"></span> Guardando...`; const selectedTags = Array.from(document.querySelectorAll('#addTaskTagsContainer .tag-selector-pill.active')).map(pill => pill.dataset.value); taskManager.addTask({ title: titleInput.value.trim(), description: document.getElementById('taskDescription').value.trim(), date: document.getElementById('taskDate').value, status: document.getElementById('taskStatus').value, priority: document.getElementById('taskPriority').value, tags: selectedTags }); document.getElementById('addTaskForm').reset(); document.querySelectorAll('#addTaskTagsContainer .tag-selector-pill.active').forEach(p => p.classList.remove('active')); addTaskModal.hide(); showAlert('Tarea agregada.', 'success'); saveBtn.disabled = false; saveBtn.innerHTML = 'Guardar Tarea'; });
+
+            document.getElementById('updateTaskBtn').addEventListener('click', function() { const id = document.getElementById('editTaskId').value; const selectedTags = Array.from(document.querySelectorAll('#editTaskTagsContainer .tag-selector-pill.active')).map(pill => pill.dataset.value); taskManager.updateTask(id, { title: document.getElementById('editTaskTitle').value.trim(), description: document.getElementById('editTaskDescription').value.trim(), date: document.getElementById('editTaskDate').value, status: document.getElementById('editTaskStatus').value, priority: document.getElementById('editTaskPriority').value, tags: selectedTags }); bootstrap.Modal.getInstance(document.getElementById('editTaskModal')).hide(); showAlert('Tarea actualizada.', 'info'); });
+
+            document.getElementById('deleteTaskFromDetailBtn').addEventListener('click', function() { const id = this.dataset.id; if (confirm('¿Seguro que deseas eliminar esta tarea?')) { taskManager.deleteTask(id); bootstrap.Modal.getInstance(document.getElementById('taskDetailModal')).hide(); showAlert('Tarea eliminada.', 'danger'); } });
+
+            document.getElementById('editTaskFromDetailBtn').addEventListener('click', function() { const id = this.dataset.id; bootstrap.Modal.getInstance(document.getElementById('taskDetailModal')).hide(); taskManager.openEditModal(id); });
+
+            document.querySelectorAll('.filter-btn').forEach(btn => { btn.addEventListener('click', function() { document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active')); this.classList.add('active'); taskManager.currentFilter = this.dataset.filter; document.getElementById('tagFilterDropdown').value = 'all'; document.getElementById('taskListTitle').textContent = `Lista de Tareas`; taskManager.renderTasks(); }); });
+
+            document.getElementById('tagFilterDropdown').addEventListener('change', function() { taskManager.currentFilter = this.value; document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active')); document.querySelector('.filter-btn[data-filter="all"]').classList.add('active'); document.getElementById('taskListTitle').textContent = `Lista de Tareas`; taskManager.renderTasks(); });
+
+            document.getElementById('downloadCompletedBtn').addEventListener('click', () => { taskManager.exportCompletedTasksToExcel(); });
+
+            // ✅ Corrección crítica: Evento de Google Sheets en contexto directo de clic
+            document.getElementById('syncGoogleSheetsBtn').addEventListener('click', function () {
+                // Forzar ux_mode: 'popup' y ejecutar inmediatamente
                 tokenClient.callback = async (resp) => {
-                    if (resp.error !== undefined) {
-                        showAlert('Error de autenticación. Es posible que el pop-up de Google haya sido bloqueado por el navegador.', 'warning');
-                        syncBtn.disabled = false;
-                        syncBtn.innerHTML = `<i class="bi bi-google"></i>`;
+                    if (resp.error) {
+                        showAlert('Error de autenticación: ' + resp.error, 'danger');
                         return;
                     }
-                    
-                    gapi.client.setToken(resp);
                     await taskManager.exportCompletedTasksToGoogleSheets();
                 };
-
-                if (gapi.client.getToken() === null) {
-                    tokenClient.requestAccessToken({prompt: 'consent'});
-                } else {
-                    tokenClient.requestAccessToken({prompt: ''});
-                }
+                // Llamada directa dentro del evento click (contexto seguro)
+                tokenClient.requestAccessToken({ prompt: 'consent' });
             });
 
             document.querySelectorAll('input[type="date"]').forEach(input => input.min = new Date().toISOString().split('T')[0]);
-            
+
             // --- Final Initialization Steps ---
             populateTagSelectors();
             populateTagFilterDropdown();
             taskManager.initCalendar();
             taskManager.refreshUI();
-            
             const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
             tooltipTriggerList.map(function (tooltipTriggerEl) { return new bootstrap.Tooltip(tooltipTriggerEl); });
         });
 
-        function showAlert(message, type = 'info') { const wrapper = document.createElement('div'); wrapper.innerHTML = `<div class="alert alert-${type} alert-dismissible fade show" role="alert"><div>${message}</div><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>`; document.getElementById('alertContainer').append(wrapper); setTimeout(() => { if (wrapper.firstChild) new bootstrap.Alert(wrapper.firstChild).close(); }, 5000); }
+        function showAlert(message, type = 'info') {
+            const wrapper = document.createElement('div');
+            wrapper.innerHTML = `<div class="alert alert-${type} alert-dismissible fade show" role="alert"><div>${message}</div><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>`;
+            document.getElementById('alertContainer').append(wrapper);
+            setTimeout(() => {
+                if (wrapper.firstChild) new bootstrap.Alert(wrapper.firstChild).close();
+            }, 5000);
+        }
     </script>
 </body>
 </html>
