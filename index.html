@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -32,7 +30,11 @@
         
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--light-color); color: var(--dark-color); }
         .navbar { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); box-shadow: 0 4px 20px rgba(99, 102, 241, 0.2); position: sticky; top: 0; z-index: 1020; }
+        
+        /* --- MODIFICACIÓN CLAVE --- */
+        /* Estilos para la barra lateral de ESCRITORIO */
         .sidebar { background-color: white; border-right: 1px solid #e5e7eb; height: calc(100vh - 56px); position: sticky; top: 56px; overflow-y: auto; z-index: 1000; }
+        
         .main-content { padding: 2rem 1rem; }
         .card { border: none; border-radius: var(--border-radius); box-shadow: var(--box-shadow); transition: var(--transition); margin-bottom: 1.5rem; overflow: hidden; background-color: white; }
         .card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12); }
@@ -89,15 +91,75 @@
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark"><div class="container-fluid"><a class="navbar-brand" href="#"><i class="bi bi-kanban-fill me-2"></i>TaskFlow Pro</a></div></nav>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <!-- BOTÓN HAMBURGUESA (visible solo en móvil) -->
+            <button class="btn btn-dark d-lg-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas" aria-controls="sidebarOffcanvas">
+                <i class="bi bi-list"></i>
+            </button>
+            <a class="navbar-brand" href="#"><i class="bi bi-kanban-fill me-2"></i>TaskFlow Pro</a>
+        </div>
+    </nav>
+
+    <!-- MENÚ LATERAL DESLIZABLE PARA MÓVIL (Offcanvas) -->
+    <div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="sidebarOffcanvas" aria-labelledby="sidebarOffcanvasLabel">
+        <div class="offcanvas-header border-bottom">
+            <h5 class="offcanvas-title" id="sidebarOffcanvasLabel"><i class="bi bi-funnel-fill me-2"></i>Filtros y Opciones</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <!-- Contenido del sidebar copiado aquí para el offcanvas -->
+            <div class="p-0">
+                <button class="btn btn-primary w-100 mb-4" data-bs-toggle="modal" data-bs-target="#addTaskModal"><i class="bi bi-plus-circle-fill me-2"></i> Nueva Tarea</button>
+                <h5 class="mb-3 text-muted small text-uppercase">Filtros</h5>
+                <div class="mb-4">
+                    <h6 class="mb-3">Estado</h6>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-light text-start filter-btn active" data-filter="all"><i class="bi bi-list-task me-2"></i> Todas</button>
+                        <button class="btn btn-light text-start filter-btn" data-filter="created"><i class="bi bi-plus-circle me-2"></i> Creadas</button>
+                        <button class="btn btn-light text-start filter-btn" data-filter="process"><i class="bi bi-arrow-repeat me-2"></i> En Proceso</button>
+                        <button class="btn btn-light text-start filter-btn" data-filter="done"><i class="bi bi-check-circle me-2"></i> Terminadas</button>
+                    </div>
+                </div>
+                <div>
+                    <h6 class="mb-3">Etiquetas Populares</h6>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-light text-start filter-btn" data-filter="tag-work"><i class="bi bi-briefcase me-2 text-primary"></i> Trabajo</button>
+                        <button class="btn btn-light text-start filter-btn" data-filter="tag-personal"><i class="bi bi-person me-2" style="color:#ec4899;"></i> Personal</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="container-fluid">
         <div class="row">
-            <!-- Sidebar -->
-            <aside class="col-lg-3 col-xl-2 sidebar px-0"><div class="p-4"><button class="btn btn-primary w-100 mb-4" data-bs-toggle="modal" data-bs-target="#addTaskModal"><i class="bi bi-plus-circle-fill me-2"></i> Nueva Tarea</button><h5 class="mb-3 text-muted small text-uppercase">Filtros</h5><div class="mb-4"><h6 class="mb-3">Estado</h6><div class="d-grid gap-2"><button class="btn btn-light text-start filter-btn active" data-filter="all"><i class="bi bi-list-task me-2"></i> Todas</button><button class="btn btn-light text-start filter-btn" data-filter="created"><i class="bi bi-plus-circle me-2"></i> Creadas</button><button class="btn btn-light text-start filter-btn" data-filter="process"><i class="bi bi-arrow-repeat me-2"></i> En Proceso</button><button class="btn btn-light text-start filter-btn" data-filter="done"><i class="bi bi-check-circle me-2"></i> Terminadas</button></div></div><div><h6 class="mb-3">Etiquetas Populares</h6><div class="d-grid gap-2"><button class="btn btn-light text-start filter-btn" data-filter="tag-work"><i class="bi bi-briefcase me-2 text-primary"></i> Trabajo</button><button class="btn btn-light text-start filter-btn" data-filter="tag-personal"><i class="bi bi-person me-2" style="color:#ec4899;"></i> Personal</button></div></div></div></aside>
+            <!-- BARRA LATERAL PARA ESCRITORIO (oculta en móvil) -->
+            <aside class="col-lg-3 col-xl-2 sidebar px-0 d-none d-lg-block">
+                <div class="p-4">
+                    <button class="btn btn-primary w-100 mb-4" data-bs-toggle="modal" data-bs-target="#addTaskModal"><i class="bi bi-plus-circle-fill me-2"></i> Nueva Tarea</button>
+                    <h5 class="mb-3 text-muted small text-uppercase">Filtros</h5>
+                    <div class="mb-4">
+                        <h6 class="mb-3">Estado</h6>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-light text-start filter-btn active" data-filter="all"><i class="bi bi-list-task me-2"></i> Todas</button>
+                            <button class="btn btn-light text-start filter-btn" data-filter="created"><i class="bi bi-plus-circle me-2"></i> Creadas</button>
+                            <button class="btn btn-light text-start filter-btn" data-filter="process"><i class="bi bi-arrow-repeat me-2"></i> En Proceso</button>
+                            <button class="btn btn-light text-start filter-btn" data-filter="done"><i class="bi bi-check-circle me-2"></i> Terminadas</button>
+                        </div>
+                    </div>
+                    <div>
+                        <h6 class="mb-3">Etiquetas Populares</h6>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-light text-start filter-btn" data-filter="tag-work"><i class="bi bi-briefcase me-2 text-primary"></i> Trabajo</button>
+                            <button class="btn btn-light text-start filter-btn" data-filter="tag-personal"><i class="bi bi-person me-2" style="color:#ec4899;"></i> Personal</button>
+                        </div>
+                    </div>
+                </div>
+            </aside>
 
             <!-- Main Content -->
-            <main class="col-lg-9 col-xl-10 main-content">
+            <main class="col-12 col-lg-9 col-xl-10 main-content">
                 <div class="container-fluid">
                     <!-- Stats Row -->
                     <div class="row">
@@ -276,6 +338,8 @@
             }
             
             const taskManager = new TaskManager();
+            const offcanvasElement = document.getElementById('sidebarOffcanvas');
+            const offcanvas = new bootstrap.Offcanvas(offcanvasElement);
 
             function populateTagSelectors() { const tagOptions = taskManager.getLabel('tag'); const addContainer = document.getElementById('addTaskTagsContainer'); const editContainer = document.getElementById('editTaskTagsContainer'); if (!addContainer || !editContainer || !tagOptions) return; addContainer.innerHTML = ''; editContainer.innerHTML = ''; for (const [value, label] of Object.entries(tagOptions)) { const pillHTML = `<span class="tag-selector-pill" data-value="${value}">${label}</span>`; addContainer.insertAdjacentHTML('beforeend', pillHTML); editContainer.insertAdjacentHTML('beforeend', pillHTML); } document.querySelectorAll('.tag-selector-pill').forEach(pill => { pill.addEventListener('click', (e) => { e.currentTarget.classList.toggle('active'); }); }); }
             function populateTagFilterDropdown() { const dropdown = document.getElementById('tagFilterDropdown'); if (!dropdown) return; const tagOptions = taskManager.getLabel('tag'); dropdown.innerHTML = '<option value="all">Filtrar por Etiqueta</option>'; for (const [value, label] of Object.entries(tagOptions)) { const option = document.createElement('option'); option.value = `tag-${value}`; option.textContent = label; dropdown.appendChild(option); } }
@@ -286,7 +350,7 @@
             document.getElementById('updateTaskBtn').addEventListener('click', function() { const id = document.getElementById('editTaskId').value; const selectedTags = Array.from(document.querySelectorAll('#editTaskTagsContainer .tag-selector-pill.active')).map(pill => pill.dataset.value); taskManager.updateTask(id, { title: document.getElementById('editTaskTitle').value.trim(), description: document.getElementById('editTaskDescription').value.trim(), date: document.getElementById('editTaskDate').value, status: document.getElementById('editTaskStatus').value, priority: document.getElementById('editTaskPriority').value, tags: selectedTags }); bootstrap.Modal.getInstance(document.getElementById('editTaskModal')).hide(); showAlert('Tarea actualizada.', 'info'); });
             document.getElementById('deleteTaskFromDetailBtn').addEventListener('click', function() { const id = this.dataset.id; if (confirm('¿Seguro que deseas eliminar esta tarea?')) { taskManager.deleteTask(id); bootstrap.Modal.getInstance(document.getElementById('taskDetailModal')).hide(); showAlert('Tarea eliminada.', 'danger'); } });
             document.getElementById('editTaskFromDetailBtn').addEventListener('click', function() { const id = this.dataset.id; bootstrap.Modal.getInstance(document.getElementById('taskDetailModal')).hide(); taskManager.openEditModal(id); });
-            document.querySelectorAll('.filter-btn').forEach(btn => { btn.addEventListener('click', function() { document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active')); this.classList.add('active'); taskManager.currentFilter = this.dataset.filter; document.getElementById('tagFilterDropdown').value = 'all'; document.getElementById('taskListTitle').textContent = `Lista de Tareas`; taskManager.renderTasks(); }); });
+            document.querySelectorAll('.filter-btn').forEach(btn => { btn.addEventListener('click', function() { document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active')); this.classList.add('active'); taskManager.currentFilter = this.dataset.filter; document.getElementById('tagFilterDropdown').value = 'all'; document.getElementById('taskListTitle').textContent = `Lista de Tareas`; taskManager.renderTasks(); if (offcanvasElement.classList.contains('show')) { offcanvas.hide(); } }); });
             document.getElementById('tagFilterDropdown').addEventListener('change', function() { taskManager.currentFilter = this.value; document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active')); document.querySelector('.filter-btn[data-filter="all"]').classList.add('active'); document.getElementById('taskListTitle').textContent = `Lista de Tareas`; taskManager.renderTasks(); });
             document.getElementById('downloadCompletedBtn').addEventListener('click', () => { taskManager.exportCompletedTasksToExcel(); });
             
