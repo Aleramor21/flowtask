@@ -31,7 +31,6 @@
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--light-color); color: var(--dark-color); }
         .navbar { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); box-shadow: 0 4px 20px rgba(99, 102, 241, 0.2); position: sticky; top: 0; z-index: 1020; }
         
-        /* --- MODIFICACIÓN CLAVE --- */
         /* Estilos para la barra lateral de ESCRITORIO */
         .sidebar { background-color: white; border-right: 1px solid #e5e7eb; height: calc(100vh - 56px); position: sticky; top: 56px; overflow-y: auto; z-index: 1000; }
         
@@ -224,19 +223,25 @@
 
         /**
          * Central function to enable Google API features once all scripts are loaded.
-         * This prevents the race condition by only enabling the UI when ready.
          */
         function checkAndEnableGoogleApiFeatures() {
-            // Check if both APIs are initialized
             if (gapiInited && gisInited) {
                 const syncBtn = document.getElementById('syncGoogleSheetsBtn');
                 if (syncBtn) {
                     syncBtn.disabled = false;
-                    // Update the tooltip to reflect the new state
-                    const tooltip = bootstrap.Tooltip.getInstance(syncBtn);
-                    if (tooltip) {
-                        tooltip.setContent({ '.tooltip-inner': 'Sincronizar con Google Sheets' });
+
+                    // --- SOLUCIÓN: MANEJO ROBUSTO DEL TOOLTIP ---
+                    // 1. Obtener la instancia de tooltip existente (si es que hay una).
+                    const existingTooltip = bootstrap.Tooltip.getInstance(syncBtn);
+                    // 2. Si existe, destruirla para evitar conflictos.
+                    if (existingTooltip) {
+                        existingTooltip.dispose();
                     }
+                    // 3. Actualizar el atributo 'title' con el nuevo texto.
+                    syncBtn.setAttribute('title', 'Sincronizar con Google Sheets');
+                    // 4. Crear una instancia de tooltip completamente nueva sobre el botón ya habilitado.
+                    new bootstrap.Tooltip(syncBtn);
+                    
                     console.log("Google API features are now ready.");
                 }
             }
